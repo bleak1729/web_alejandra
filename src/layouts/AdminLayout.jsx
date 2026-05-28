@@ -11,6 +11,7 @@ const links = [
   { to: '/admin/usuarios',   label: 'Usuarios',             ic: '☻' },
   { to: '/admin/categorias', label: 'Categorías',           ic: '⌗' },
   { to: '/admin/cursos',     label: 'Cursos',               ic: '✎' },
+  { to: '/admin/empresa',   label: 'Empresa',              ic: '⚙' },
 ];
 
 export default function AdminLayout() {

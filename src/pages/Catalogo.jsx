@@ -1,9 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import { addToCart } from '../lib/cart';
-import { useAuthStore } from '../store/authStore';
 import ProductPlaceholder from '../components/catalog/ProductPlaceholder';
 
 const TINTS = {
@@ -66,8 +65,6 @@ function ProdImg({ producto }) {
 
 export default function Catalogo() {
   const { categoria } = useParams();
-  const nav = useNavigate();
-  const user = useAuthStore((s) => s.user);
 
   const [productos, setProductos] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -114,7 +111,6 @@ export default function Catalogo() {
 
   async function handleAdd(e, producto) {
     e.preventDefault();
-    if (!user) return nav('/login');
     if (producto.stock <= 0) return;
     await addToCart(producto, 1);
     setAdded((prev) => ({ ...prev, [producto.id]: true }));

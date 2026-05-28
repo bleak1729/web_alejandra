@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { collection, getDocs, query, orderBy } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 
@@ -33,9 +33,19 @@ function ImgPlaceholder({ from, to, glyph }) {
 }
 
 export default function Cursos() {
+  const nav = useNavigate();
   const [filtro, setFiltro] = useState('todos');
   const [cursos, setCursos] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  function reservar(curso) {
+    nav('/contacto', {
+      state: {
+        asunto: 'Curso o taller',
+        mensaje: `Hola, me interesa reservar plaza para: ${curso.titulo}.\n\nPor favor, indícame disponibilidad y próximas fechas.`,
+      },
+    });
+  }
 
   useEffect(() => {
     (async () => {
@@ -124,11 +134,11 @@ export default function Cursos() {
               <div className="flex items-center gap-3 mt-auto pt-4">
                 <span className="font-serif text-2xl text-verde-900">{c.precio} €</span>
                 <button
-                  disabled={!c.disponible}
+                  onClick={() => reservar(c)}
                   className={`ml-auto text-sm px-4 py-2 rounded-full border transition-all duration-200 ${
                     c.disponible
                       ? 'bg-verde-600 text-white border-verde-600 hover:bg-verde-700'
-                      : 'border-tinta/15 text-tinta/40 cursor-not-allowed'
+                      : 'border-verde-600 text-verde-700 hover:bg-verde-50'
                   }`}
                 >
                   {c.disponible ? 'Reservar plaza →' : 'Avisarme →'}

@@ -26,6 +26,7 @@ import AdminPedidos from './pages/admin/Pedidos';
 import AdminUsuarios from './pages/admin/Usuarios';
 import AdminCategorias from './pages/admin/Categorias';
 import AdminCursos from './pages/admin/Cursos';
+import AdminEmpresa from './pages/admin/Empresa';
 
 export default function App() {
   return (
@@ -61,6 +62,7 @@ export default function App() {
           <Route path="usuarios" element={<AdminUsuarios />} />
           <Route path="categorias" element={<AdminCategorias />} />
           <Route path="cursos" element={<AdminCursos />} />
+          <Route path="empresa" element={<AdminEmpresa />} />
         </Route>
       </Route>
     </Routes>
