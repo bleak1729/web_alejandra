@@ -69,8 +69,11 @@ export default function Checkout() {
               <span>Tarjeta (Stripe)</span>
             </label>
             <label className="flex items-center gap-3 card p-4 cursor-pointer">
-              <input type="radio" checked={metodoPago === 'mercadopago'} onChange={() => setMetodoPago('mercadopago')}/>
-              <span>MercadoPago</span>
+              <input type="radio" checked={metodoPago === 'efectivo'} onChange={() => setMetodoPago('efectivo')}/>
+              <div>
+                <span>Efectivo</span>
+                <p className="text-xs text-tinta/50 mt-0.5">Retiro en local · Te confirmamos dirección por email</p>
+              </div>
             </label>
           </div>
         </section>
@@ -82,14 +85,14 @@ export default function Checkout() {
           {items.map((i) => (
             <li key={i.productoId} className="flex justify-between">
               <span className="truncate mr-2">{i.nombre} × {i.cantidad}</span>
-              <span>${(i.precio * i.cantidad).toFixed(2)}</span>
+              <span>€{(i.precio * i.cantidad).toFixed(2)}</span>
             </li>
           ))}
         </ul>
-        <div className="mt-4 pt-4 border-t border-crema-200 flex justify-between font-semibold">
-          <span>Total</span><span>${total.toFixed(2)}</span>
+        <div className="mt-4 pt-4 border-t border-verde-200 flex justify-between font-semibold">
+          <span>Total</span><span>€{total.toFixed(2)}</span>
         </div>
-        {error && <p className="mt-4 text-sm text-rosa-500">{error}</p>}
+        {error && <p className="mt-4 text-sm text-terracota-400">{error}</p>}
         <button type="submit" disabled={procesando} className="btn-primary w-full mt-6 disabled:opacity-50">
           {procesando ? 'Procesando…' : 'Confirmar y pagar'}
         </button>

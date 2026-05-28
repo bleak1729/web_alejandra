@@ -83,7 +83,7 @@ export default function Nosotros() {
       </section>
 
       {/* CTA */}
-      <section className="mt-16 mb-4 bg-crema-100 rounded-2xl p-10 text-center">
+      <section className="mt-16 mb-4 bg-verde-100 rounded-2xl p-10 text-center">
         <h3 className="font-serif text-3xl text-verde-900 mb-3">¿Empezamos juntas tu fórmula?</h3>
         <p className="text-tinta/60 mb-6">Una sesión 1:1 de 60 minutos para revisar tu receta, etiquetado o producción.</p>
         <Link to="/asesorias-cursos" className="btn-primary">Reservar asesoría →</Link>

@@ -31,7 +31,7 @@ export default function Registro() {
         <div><label className="label">Contraseña</label>
           <input className="input" type="password" minLength={6} value={form.pass} onChange={(e) => setForm({...form, pass: e.target.value})} required/>
         </div>
-        {err && <p className="text-sm text-rosa-500">{err}</p>}
+        {err && <p className="text-sm text-terracota-400">{err}</p>}
         <button className="btn-primary w-full">Crear cuenta</button>
         <p className="text-sm text-center text-tinta/60">
           ¿Ya tienes cuenta? <Link to="/login" className="text-verde-700 underline">Ingresa</Link>

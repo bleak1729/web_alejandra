@@ -179,7 +179,7 @@ export default function Catalogo() {
               className="w-full accent-verde-700"
             />
             <div className="flex justify-between text-xs text-tinta/40 mt-1">
-              <span>$1</span><span>${precioMax}</span>
+              <span>€1</span><span>€{precioMax}</span>
             </div>
           </div>
 
@@ -231,14 +231,14 @@ export default function Catalogo() {
                       )}
                       <div className="flex items-end justify-between mt-auto pt-2">
                         <div>
-                          <p className="font-medium text-tinta">${p.precio?.toFixed(2)}</p>
+                          <p className="font-medium text-tinta">€{p.precio?.toFixed(2)}</p>
                           <p className="text-xs text-tinta/50">{p.unidad}</p>
                         </div>
                         <button
                           onClick={(e) => handleAdd(e, p)}
                           disabled={sinStock}
                           aria-label={sinStock ? 'Sin stock' : 'Agregar al carrito'}
-                          className="w-9 h-9 rounded-full bg-verde-700 text-white text-lg flex items-center justify-center hover:bg-verde-900 disabled:bg-tinta/30 disabled:cursor-not-allowed transition-colors"
+                          className="w-9 h-9 rounded-full bg-verde-600 text-white text-lg flex items-center justify-center hover:bg-verde-700 disabled:bg-tinta/30 disabled:cursor-not-allowed transition-colors"
                         >
                           {sinStock ? '×' : added[p.id] ? '✓' : '+'}
                         </button>

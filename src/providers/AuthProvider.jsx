@@ -4,6 +4,8 @@ import { doc, onSnapshot, setDoc, serverTimestamp } from 'firebase/firestore';
 import { auth, db } from '../lib/firebase';
 import { useAuthStore } from '../store/authStore';
 import { useCartStore } from '../store/cartStore';
+import { readGuestCart, useGuestStore } from '../store/guestStore';
+import { mergeGuestCartOnLogin } from '../lib/cart';
 
 export function AuthProvider({ children }) {
   const { setUser, setProfile, setLoading, reset } = useAuthStore();
@@ -20,12 +22,18 @@ export function AuthProvider({ children }) {
 
       if (!user) {
         reset();
-        resetCart();
-        setLoading(false);
+        // Carga carrito invitado desde localStorage (sin Firestore)
+        const guestItems = readGuestCart();
+        setCartItems(guestItems);
         return;
       }
 
       setUser(user);
+
+      // Al loguearse, fusionar carrito invitado si existe
+      await mergeGuestCartOnLogin(user.uid);
+      // Limpiar sesión invitado
+      useGuestStore.getState().clearGuest();
 
       const userRef = doc(db, 'usuarios', user.uid);
       unsubProfile = onSnapshot(userRef, async (snap) => {

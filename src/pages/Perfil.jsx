@@ -66,11 +66,11 @@ export default function Perfil() {
                   <p className="font-mono text-xs text-tinta/50">{p.id}</p>
                   <span className={`text-xs px-2 py-1 rounded-full ${
                     p.estado === 'entregado' ? 'bg-verde-100 text-verde-700' :
-                    p.estado === 'cancelado' ? 'bg-rosa-100 text-rosa-500' :
-                    'bg-crema-100 text-tinta/70'
+                    p.estado === 'cancelado' ? 'bg-terracota-100 text-terracota-400' :
+                    'bg-verde-100 text-verde-700'
                   }`}>{p.estado}</span>
                 </div>
-                <p className="mt-2 text-sm">{p.items?.length} productos · <strong>${p.total?.toFixed(2)}</strong></p>
+                <p className="mt-2 text-sm">{p.items?.length} productos · <strong>€{p.total?.toFixed(2)}</strong></p>
               </article>
             ))}
           </div>

@@ -1,18 +1,13 @@
 import { Link } from 'react-router-dom';
 import { addToCart } from '../../lib/cart';
-import { useAuthStore } from '../../store/authStore';
-import { useNavigate } from 'react-router-dom';
 import ProductPlaceholder from './ProductPlaceholder';
 
 export default function ProductCard({ producto }) {
-  const user = useAuthStore((s) => s.user);
-  const nav = useNavigate();
   const sinStock = producto.stock <= 0;
   const ultimas = !sinStock && producto.stock <= (producto.stockMinimo ?? 0);
 
   async function handleAdd(e) {
     e.preventDefault();
-    if (!user) return nav('/login');
     if (sinStock) return;
     await addToCart(producto, 1);
   }
@@ -51,7 +46,7 @@ export default function ProductCard({ producto }) {
         <h3 className="mt-1 font-serif text-lg text-verde-900 line-clamp-1">{producto.nombre}</h3>
         <div className="mt-3 flex items-end justify-between">
           <div>
-            <span className="font-semibold text-tinta">${producto.precio?.toFixed(2)}</span>
+            <span className="font-semibold text-tinta">€{producto.precio?.toFixed(2)}</span>
             <span className="text-xs text-tinta/50 ml-1">/{producto.unidad}</span>
           </div>
           <button

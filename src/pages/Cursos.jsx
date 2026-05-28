@@ -89,7 +89,7 @@ export default function Cursos() {
             onClick={() => setFiltro(val)}
             className={`px-4 py-2 rounded-full text-sm border transition-all duration-200 ${
               filtro === val
-                ? 'bg-verde-700 text-white border-verde-700'
+                ? 'bg-verde-600 text-white border-verde-600'
                 : 'border-tinta/15 text-tinta hover:border-tinta'
             }`}
           >
@@ -109,11 +109,11 @@ export default function Cursos() {
             <ImgPlaceholder from={c.gradiente.from} to={c.gradiente.to} glyph={c.glyph} />
             <div className="p-6 flex flex-col">
               <div className="flex gap-2 mb-2">
-                <span className="inline-block px-2.5 py-1 rounded-full text-[11px] uppercase tracking-[0.1em] bg-crema-100 text-tinta/60">
+                <span className="inline-block px-2.5 py-1 rounded-full text-[11px] uppercase tracking-[0.1em] bg-verde-100 text-verde-700">
                   {c.tipo === 'asesoria' ? 'Asesoría 1:1' : 'Curso'}
                 </span>
                 {c.proximamente && (
-                  <span className="inline-block px-2.5 py-1 rounded-full text-[11px] uppercase tracking-[0.1em] bg-rosa-100 text-rosa-500">
+                  <span className="inline-block px-2.5 py-1 rounded-full text-[11px] uppercase tracking-[0.1em] bg-terracota-100 text-terracota-400">
                     Próxima edición
                   </span>
                 )}
@@ -127,7 +127,7 @@ export default function Cursos() {
                   disabled={!c.disponible}
                   className={`ml-auto text-sm px-4 py-2 rounded-full border transition-all duration-200 ${
                     c.disponible
-                      ? 'bg-verde-700 text-white border-verde-700 hover:bg-verde-900'
+                      ? 'bg-verde-600 text-white border-verde-600 hover:bg-verde-700'
                       : 'border-tinta/15 text-tinta/40 cursor-not-allowed'
                   }`}
                 >

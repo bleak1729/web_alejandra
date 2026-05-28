@@ -96,7 +96,7 @@ export default function Blog() {
           className="aspect-[4/3] rounded-2xl"
         />
         <div>
-          <span className="inline-block px-3 py-1 rounded-full text-xs uppercase tracking-[0.1em] bg-crema-100 text-tinta/60">
+          <span className="inline-block px-3 py-1 rounded-full text-xs uppercase tracking-[0.1em] bg-verde-100 text-verde-700">
             {featured.categoria}
           </span>
           <h2 className="font-serif text-4xl text-verde-900 leading-snug mt-3 mb-4">

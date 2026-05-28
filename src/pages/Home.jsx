@@ -1,18 +1,17 @@
 import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { collection, getDocs, limit, query, where } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import { addToCart } from '../lib/cart';
-import { useAuthStore } from '../store/authStore';
 
-/* ── Paleta blush/terracota (index.html) ── */
+/* ── Paleta teal (design system) ── */
 const P = {
-  bg:       '#fbf3ec',
-  bgSoft:   '#f4e8dc',
-  deep:     '#8a5640',
-  tint:     '#f0dcce',
-  ink:      '#2a2820',
-  inkSoft:  '#6b665a',
+  bg:       '#eef5f3',   // verde-50
+  bgSoft:   '#dcebe8',   // verde-100
+  deep:     '#327069',   // verde-600
+  tint:     '#dcebe8',   // verde-100
+  ink:      '#1d1b17',   // tinta
+  inkSoft:  '#665f52',   // crema-600
 };
 
 const CATEGORIAS = [
@@ -76,9 +75,9 @@ function BtnPrimary({ to, children }) {
     <Link
       to={to}
       className="inline-flex items-center gap-1 px-6 py-3 rounded-full text-sm font-medium text-white transition-all duration-200"
-      style={{ background: P.deep, borderColor: P.deep }}
-      onMouseEnter={e => e.currentTarget.style.background = P.ink}
-      onMouseLeave={e => e.currentTarget.style.background = P.deep}
+      style={{ background: '#327069' }}
+      onMouseEnter={e => e.currentTarget.style.background = '#27595a'}
+      onMouseLeave={e => e.currentTarget.style.background = '#327069'}
     >
       {children}
     </Link>
@@ -123,16 +122,16 @@ function ProdCard({ producto, onAdd, added }) {
         )}
         <div className="flex items-end justify-between mt-auto pt-2">
           <div>
-            <p className="font-medium" style={{ color: P.ink }}>${producto.precio?.toFixed(2)}</p>
+            <p className="font-medium" style={{ color: P.ink }}>€{producto.precio?.toFixed(2)}</p>
             <p className="text-[0.72rem]" style={{ color: P.inkSoft }}>{producto.unidad}</p>
           </div>
           <button
             onClick={(e) => { e.preventDefault(); onAdd(producto); }}
             disabled={sinStock}
             className="w-9 h-9 rounded-full text-white text-lg flex items-center justify-center disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-            style={{ background: sinStock ? '#ccc' : P.deep }}
-            onMouseEnter={e => { if (!sinStock) e.currentTarget.style.background = P.ink; }}
-            onMouseLeave={e => { if (!sinStock) e.currentTarget.style.background = P.deep; }}
+            style={{ background: sinStock ? '#ccc' : '#327069' }}
+            onMouseEnter={e => { if (!sinStock) e.currentTarget.style.background = '#27595a'; }}
+            onMouseLeave={e => { if (!sinStock) e.currentTarget.style.background = '#327069'; }}
           >
             {sinStock ? '×' : added ? '✓' : '+'}
           </button>
@@ -143,8 +142,6 @@ function ProdCard({ producto, onAdd, added }) {
 }
 
 export default function Home() {
-  const nav = useNavigate();
-  const user = useAuthStore((s) => s.user);
   const [destacados, setDestacados] = useState([]);
   const [added, setAdded] = useState({});
   const [newsEmail, setNewsEmail] = useState('');
@@ -161,7 +158,6 @@ export default function Home() {
   }, []);
 
   async function handleAdd(producto) {
-    if (!user) return nav('/login');
     if (producto.stock <= 0) return;
     await addToCart(producto, 1);
     setAdded((p) => ({ ...p, [producto.id]: true }));
@@ -213,13 +209,13 @@ export default function Home() {
       </section>
 
       {/* ── TRUST STRIP ── */}
-      <div className="border-y border-tinta/10" style={{ background: P.bgSoft }}>
+      <div className="border-y border-verde-200/60" style={{ background: '#dcebe8' }}>
         <div className="container-app grid grid-cols-2 md:grid-cols-4 gap-8 py-8">
           {TRUST.map(({ icon, t, s }) => (
             <div key={t} className="flex gap-3 items-start">
               <div
                 className="w-9 h-9 rounded-full flex items-center justify-center flex-none shadow-sm bg-white"
-                style={{ color: P.deep }}
+                style={{ color: '#327069' }}
               >
                 {TRUST_ICONS[icon]}
               </div>
@@ -236,7 +232,7 @@ export default function Home() {
       <section className="container-app py-16">
         <div className="flex justify-between items-end mb-7 flex-wrap gap-4">
           <div>
-            <p className="text-[0.7rem] uppercase tracking-[0.18em] font-medium mb-1" style={{ color: P.deep }}>El catálogo</p>
+            <p className="text-[0.7rem] uppercase tracking-[0.18em] font-medium mb-1" style={{ color: '#327069' }}>El catálogo</p>
             <h2 className="font-serif font-medium text-[2.6rem] leading-[1.05] m-0" style={{ color: P.ink }}>
               Materias primas <em>cuidadosamente</em> seleccionadas
             </h2>
@@ -336,7 +332,7 @@ export default function Home() {
       <section className="container-app pb-20">
         <div
           className="rounded-2xl p-10 md:p-12 grid md:grid-cols-[1.2fr_1fr] gap-8 items-center"
-          style={{ background: P.ink, color: P.bg }}
+          style={{ background: '#1b3f40', color: '#eef5f3' }}
         >
           <div>
             <h3 className="font-serif font-medium text-[2rem] m-0 mb-2">"Recetas que llegan a tu bandeja"</h3>
@@ -345,7 +341,7 @@ export default function Home() {
             </p>
           </div>
           {newsSent ? (
-            <p className="font-medium" style={{ color: '#c9a96e' }}>¡Te has suscrito!</p>
+            <p className="font-medium" style={{ color: '#d7a35a' }}>¡Te has suscrito!</p>
           ) : (
             <form onSubmit={handleNews} className="flex flex-col sm:flex-row gap-2">
               <input
@@ -357,15 +353,15 @@ export default function Home() {
                 style={{
                   background: 'rgba(255,255,255,0.08)',
                   border: '1px solid rgba(255,255,255,0.2)',
-                  color: P.bg,
+                  color: '#eef5f3',
                 }}
               />
               <button
                 type="submit"
                 className="px-6 py-3 rounded-full font-medium text-[0.9rem] whitespace-nowrap transition-colors"
-                style={{ background: '#c9a96e', color: P.ink }}
+                style={{ background: '#d7a35a', color: '#1d1b17' }}
                 onMouseEnter={e => e.currentTarget.style.background = 'white'}
-                onMouseLeave={e => e.currentTarget.style.background = '#c9a96e'}
+                onMouseLeave={e => e.currentTarget.style.background = '#d7a35a'}
               >
                 Suscribirme
               </button>

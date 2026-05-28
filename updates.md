@@ -11,6 +11,70 @@ Registro de versiones. Toda modificación al proyecto debe:
 
 ---
 
+## V1.5.0 — 2026-05-28
+
+**Carrito para invitadas — sin registro en base de datos.**
+
+- `src/store/guestStore.js` (nuevo): Zustand store que guarda `{ nombre, apellido, email }` y el carrito invitado exclusivamente en `localStorage` (`vc_guest`, `vc_guest_cart`). Sin escritura a Firestore ni `/usuarios`.
+- `src/components/auth/GuestModal.jsx` (nuevo): Modal que aparece la primera vez que se intenta agregar un ítem sin sesión activa. Pide nombre, apellido y correo. Al confirmar guarda la sesión guest localmente y agrega el ítem al carrito localStorage.
+- `src/lib/cart.js`: `addToCart`, `updateCartItem`, `removeFromCart` y `clearCart` bifurcan entre Firestore (usuario autenticado) y localStorage (invitada). Nueva función `mergeGuestCartOnLogin` que fusiona el carrito invitado en Firestore al hacer login.
+- `src/providers/AuthProvider.jsx`: Al no haber usuario, inicializa el store de carrito desde `localStorage`. Al hacer login, llama `mergeGuestCartOnLogin` y limpia la sesión invitada.
+- `src/components/catalog/ProductCard.jsx`: Si no hay usuario ni guest, abre `GuestModal` en vez de redirigir a `/login`.
+- `src/pages/ProductoDetalle.jsx`: Idem.
+- `src/pages/Carrito.jsx`: Muestra el carrito si hay usuario autenticado **o** guest. La pantalla de "Ingresa" solo aparece si no hay ninguno de los dos.
+- `src/layouts/PublicLayout.jsx`: Renderiza `<GuestModal />` globalmente.
+
+---
+
+## V1.4.3 — 2026-05-28
+
+**Paleta teal aplicada a todas las páginas públicas.**
+
+- `Home.jsx`: paleta `P` migrada de blush/terracota a teal (`bg:#eef5f3`, `bgSoft:#dcebe8`, `deep:#327069`, `tint:#dcebe8`, `inkSoft:#665f52`). Newsletter section bg `#1b3f40` (verde-800 oscuro), botón submit `dorado-400 #d7a35a`.
+- `Cursos.jsx`: filtros activos `verde-600`, botón "Reservar plaza" `verde-600`, badges tipo `bg-verde-100 text-verde-700`, badge "Próxima edición" `terracota-100/400`.
+- `Nosotros.jsx`: CTA section `bg-crema-100` → `bg-verde-100`.
+- `ProductoDetalle.jsx`: placeholder `bg-verde-100`, error stock `text-terracota-400`, quantity border `verde-200`.
+- `Carrito.jsx`: thumbnails `bg-verde-100`, borders `verde-200`, botón eliminar hover `text-terracota-400`.
+- `Checkout.jsx`: border total `verde-200`, error pago `text-terracota-400`.
+- `Perfil.jsx`: badge cancelado `terracota-100/400`, badge pendiente `verde-100/700`.
+- `Login.jsx` / `Registro.jsx`: errores `text-terracota-400`.
+- `Blog.jsx`: badge categoría `bg-verde-100 text-verde-700`.
+
+---
+
+## V1.4.2 — 2026-05-28
+
+**Botones y header unificados con paleta teal.**
+
+- `Header.jsx`: fondo `bg-crema-50/85` → `bg-verde-100/90`, borde `border-crema-200` → `border-verde-200`. Header ahora en el mismo tono menta que el trust strip.
+- `index.css` `.btn-primary`: `bg-verde-700` → `bg-verde-600` (teal medio), hover `bg-verde-700`.
+- `Home.jsx` `BtnPrimary`: inline style cambiado de terracota `#8a5640` a teal `#327069`/`#27595a`.
+- `Home.jsx` botón `+` product cards: terracota → teal `#327069`.
+- `Home.jsx` íconos trust strip y eyebrow "El catálogo": terracota → teal `#327069`.
+- `Catalogo.jsx` botón `+`: `bg-verde-700 hover:bg-verde-900` → `bg-verde-600 hover:bg-verde-700`.
+
+---
+
+## V1.4.1 — 2026-05-28
+
+**Fondo de página ajustado al tono menta del mockup.**
+
+- `body` background: `bg-crema-50` (`#f6f4ef`) → `bg-verde-50` (`#eef5f3`). Coincide con el tono sage/menta suave del diseño de referencia.
+- `--color-bg` CSS var actualizada a `#eef5f3`.
+
+---
+
+## V1.4.0 — 2026-05-28
+
+**Design System completo basado en PaletaColores/package.html.**
+
+- `tailwind.config.js`: escala `verde` migrada a paleta teal (5 tonos del diseño: `#cce0dc → #7fb6ad → #3f8a82 → #1b3f40`, brand `#27595a`). Escala `crema` actualizada a neutros cálidos reales. Nuevas escalas `terracota` (6 tonos) y `salvia` (6 tonos). `dorado` extendido con tono 300. `tinta` actualizado a `#1d1b17`.
+- Tipografía: alias `display-2xl/xl/lg/md` con line-height y tracking calibrados. Nuevos `letterSpacing` tokens: `label`, `caps`, `spaced`.
+- Sombras: sistema de 4 niveles con tinte brand (`shadow-soft`, `shadow-card`, `shadow-card-lg`, `shadow-modal`).
+- `src/index.css`: CSS custom properties completas (colores, sombras, overlays). Nuevas variantes de botón: `btn-ghost`, `btn-terra`, `btn-sm`, `btn-lg`. Nuevas variantes de badge: `badge-salvia`, `badge-pill`. Nuevas clases tipográficas: `heading-display`, `heading-section`, `eyebrow`. Utilidades: `section`, `section-sm`, `divider`, `overlay-*`, form helpers (`input-error`, `error-msg`, `helper-msg`).
+
+---
+
 ## V1.3.0 — 2026-05-24
 
 **Módulo admin reescrito con diseño dark theme (admin.html).**

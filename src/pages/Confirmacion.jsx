@@ -22,11 +22,11 @@ export default function Confirmacion() {
       {pedido && (
         <div className="card mt-8 p-6 text-left">
           <p className="text-sm text-tinta/60">Estado: <span className="text-verde-700">{pedido.estado}</span></p>
-          <p className="mt-2 text-sm">Total: <span className="font-semibold">${pedido.total?.toFixed(2)}</span></p>
+          <p className="mt-2 text-sm">Total: <span className="font-semibold">€{pedido.total?.toFixed(2)}</span></p>
           <ul className="mt-4 space-y-1 text-sm">
             {pedido.items?.map((i) => (
               <li key={i.productoId} className="flex justify-between">
-                <span>{i.nombre} × {i.cantidad}</span><span>${i.subtotal?.toFixed(2)}</span>
+                <span>{i.nombre} × {i.cantidad}</span><span>€{i.subtotal?.toFixed(2)}</span>
               </li>
             ))}
           </ul>
