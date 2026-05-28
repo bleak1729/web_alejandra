@@ -1,0 +1,899 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Admin — Vidacosmetic&amp;mas</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+<style>
+  :root {
+    --bg: #1c1d18;
+    --panel: rgba(255,255,255,0.04);
+    --panel-2: rgba(255,255,255,0.03);
+    --border: rgba(255,255,255,0.08);
+    --border-strong: rgba(255,255,255,0.15);
+    --ink: #ece7d8;
+    --ink-mute: rgba(236,231,216,0.7);
+    --ink-faint: rgba(255,255,255,0.55);
+    --gold: #d6b97e;
+    --ok: #a9c597;
+    --warn: #e3c894;
+    --danger: #e0a194;
+    --info: #b6c7d6;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); }
+  body { font-family: 'Inter', sans-serif; line-height: 1.55; }
+  a { color: inherit; text-decoration: none; }
+  .font-serif { font-family: 'Cormorant Garamond', serif; font-weight: 500; }
+  .font-serif-italic { font-family: 'Cormorant Garamond', serif; font-style: italic; }
+  .tracking-cap {
+    text-transform: uppercase; letter-spacing: 0.18em;
+    font-size: 0.7rem; font-weight: 500; color: var(--ink-faint);
+  }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+
+  /* LAYOUT */
+  .shell { display: grid; grid-template-columns: 240px 1fr; min-height: 100vh; }
+
+  /* SIDEBAR */
+  aside.sidebar {
+    border-right: 1px solid var(--border);
+    padding: 1.6rem 1.2rem;
+    display: flex; flex-direction: column;
+    position: sticky; top: 0; height: 100vh;
+  }
+  .brand {
+    display: flex; align-items: center; gap: 0.6rem;
+    margin-bottom: 1.5rem; color: inherit;
+  }
+  .brand-glyph {
+    width: 22px; height: 22px; border-radius: 999px;
+    background: radial-gradient(circle at 30% 30%, #c9d3b8, #6f8a5e);
+  }
+  .brand-name { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; }
+  .brand-name .amp { color: var(--gold); font-style: italic; }
+  .sidebar nav { display: flex; flex-direction: column; gap: 4px; }
+  .nav-btn {
+    display: flex; align-items: center; gap: 0.6rem;
+    padding: 0.6rem 0.8rem; border-radius: 8px;
+    border: none; background: transparent;
+    color: var(--ink-mute);
+    font-size: 0.85rem; cursor: pointer; text-align: left;
+    font-family: inherit; transition: background 0.15s, color 0.15s;
+  }
+  .nav-btn:hover { color: var(--ink); }
+  .nav-btn.active { background: rgba(255,255,255,0.08); color: var(--ink); }
+  .nav-btn .ic { width: 18px; text-align: center; opacity: 0.8; }
+  .sidebar-user {
+    margin-top: auto; border-top: 1px solid var(--border);
+    padding-top: 1rem;
+  }
+  .sidebar-user .nm { font-size: 0.85rem; font-weight: 500; }
+  .sidebar-user .em { font-size: 0.72rem; color: var(--ink-faint); }
+  .btn-out {
+    margin-top: 0.7rem; padding: 0.5rem 0.8rem;
+    background: transparent; color: var(--ink-mute);
+    border: 1px solid var(--border-strong); border-radius: 999px;
+    width: 100%; cursor: pointer; font-family: inherit; font-size: 0.78rem;
+  }
+  .btn-out:hover { color: var(--ink); border-color: var(--ink); }
+
+  /* MAIN */
+  main { padding: 2rem 2.5rem 3rem; min-width: 0; }
+  .page-header {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;
+  }
+  .page-header h1 {
+    font-family: 'Cormorant Garamond', serif; font-weight: 500;
+    font-size: 2.4rem; margin: 0.3rem 0 0; color: var(--ink);
+  }
+  .actions { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+  .btn-sm {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    padding: 0.5rem 0.9rem; border-radius: 999px;
+    font-size: 0.8rem; font-family: inherit; cursor: pointer;
+    border: 1px solid var(--border-strong); background: transparent;
+    color: var(--ink); transition: all 0.15s;
+  }
+  .btn-sm:hover { border-color: var(--ink); }
+  .btn-sm.primary { background: var(--gold); color: #1c1d18; border-color: var(--gold); }
+  .btn-sm.primary:hover { background: white; border-color: white; }
+
+  /* CARD */
+  .card {
+    padding: 1.4rem; background: var(--panel);
+    border: 1px solid var(--border); border-radius: 12px;
+  }
+  .card h3 {
+    font-family: 'Cormorant Garamond', serif; font-weight: 500;
+    font-size: 1.3rem; margin: 0; color: var(--ink);
+  }
+
+  /* KPIs */
+  .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2rem; }
+  .kpi { padding: 1.2rem; background: var(--panel); border: 1px solid var(--border); border-radius: 12px; }
+  .kpi .v { font-family: 'Cormorant Garamond', serif; font-weight: 500; font-size: 2rem; margin-top: 0.5rem; color: var(--ink); }
+  .kpi .s { font-size: 0.75rem; color: var(--ink-faint); margin-top: 4px; }
+
+  /* GRIDS */
+  .row-2 { display: grid; grid-template-columns: 1.6fr 1fr; gap: 1.2rem; }
+  .row-2b { display: grid; grid-template-columns: 1.4fr 1fr; gap: 1.2rem; margin-top: 1.2rem; }
+
+  /* CHART */
+  .chart { display: flex; align-items: flex-end; gap: 8px; height: 180px; padding: 0.5rem 0; }
+  .chart .col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; height: 100%; }
+  .chart .bar-wrap { flex: 1; width: 100%; display: flex; align-items: flex-end; }
+  .chart .bar {
+    width: 100%; border-radius: 6px 6px 0 0;
+    background: linear-gradient(to top, rgba(214,185,126,0.4), rgba(214,185,126,0.8));
+  }
+  .chart .bar.last { background: var(--gold); }
+  .chart .lab { font-size: 10px; color: var(--ink-faint); }
+
+  /* PILL */
+  .pill {
+    display: inline-block; padding: 0.22rem 0.55rem;
+    border-radius: 999px; font-size: 0.7rem;
+    background: rgba(255,255,255,0.08); color: var(--ink-mute);
+    text-transform: uppercase; letter-spacing: 0.08em;
+  }
+  .pill.ok { background: rgba(169,197,151,0.15); color: var(--ok); }
+  .pill.warn { background: rgba(227,200,148,0.15); color: var(--warn); }
+  .pill.danger { background: rgba(224,161,148,0.15); color: var(--danger); }
+  .pill.info { background: rgba(182,199,214,0.15); color: var(--info); }
+  .pill.muted { background: rgba(255,255,255,0.06); color: var(--ink-mute); }
+
+  /* ALERTS LIST */
+  .alert-row {
+    padding: 0.7rem 0.8rem; background: var(--panel-2);
+    border-radius: 8px; display: flex;
+    justify-content: space-between; align-items: center; gap: 0.6rem;
+    margin-bottom: 0.5rem;
+  }
+  .alert-row .nm { font-size: 0.85rem; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .alert-row .mn { font-size: 0.7rem; color: var(--ink-faint); }
+
+  /* ORDER ROW (dashboard) */
+  .order-row {
+    padding: 0.6rem 0; display: flex; align-items: center; gap: 0.8rem;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .order-row .id { font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--ink-faint); }
+  .order-row .cli { font-size: 0.88rem; color: var(--ink); }
+  .order-row .tot { font-weight: 500; min-width: 80px; text-align: right; color: var(--ink); }
+
+  /* TOP PRODUCTS */
+  .top-row { display: flex; align-items: center; gap: 0.7rem; margin-bottom: 0.7rem; }
+  .top-row .num {
+    width: 40px; height: 40px; border-radius: 8px;
+    background: linear-gradient(135deg, var(--t1), var(--t2));
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Cormorant Garamond', serif; font-style: italic;
+    color: rgba(255,255,255,0.9); font-size: 0.9rem;
+  }
+  .top-row .nm { font-size: 0.85rem; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .top-row .pr { font-size: 0.72rem; color: var(--ink-faint); }
+  .top-row .vts { font-size: 0.85rem; color: var(--gold); margin-left: auto; }
+
+  /* INPUTS */
+  .toolbar { display: flex; gap: 0.6rem; margin-bottom: 1rem; flex-wrap: wrap; align-items: center; }
+  .input, .select, .textarea {
+    padding: 0.55rem 0.85rem; border-radius: 8px;
+    background: var(--panel); color: var(--ink);
+    border: 1px solid rgba(255,255,255,0.12);
+    font-family: inherit; font-size: 0.85rem;
+  }
+  .input { flex: 1; min-width: 200px; }
+  .input:focus, .select:focus, .textarea:focus { outline: none; border-color: var(--gold); }
+
+  /* FILTER CHIPS */
+  .chips { display: flex; gap: 0.3rem; flex-wrap: wrap; }
+  .chip {
+    padding: 0.35rem 0.8rem; border-radius: 999px;
+    border: 1px solid var(--border-strong); background: transparent;
+    color: var(--ink-mute); font-size: 12px; cursor: pointer;
+    font-family: inherit; transition: all 0.15s;
+  }
+  .chip:hover { color: var(--ink); }
+  .chip.active { background: var(--gold); color: #1c1d18; border-color: var(--gold); }
+  .chip .n { opacity: 0.65; margin-left: 4px; }
+
+  /* TABLES */
+  .table-wrap { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+  .table-scroll { overflow-x: auto; }
+  table {
+    width: 100%; border-collapse: collapse;
+    font-size: 0.85rem; min-width: 720px;
+  }
+  thead tr { background: rgba(255,255,255,0.04); color: var(--ink-faint); text-align: left; }
+  th { padding: 0.8rem 1rem; font-weight: 500; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; }
+  td { padding: 0.8rem 1rem; vertical-align: middle; border-top: 1px solid rgba(255,255,255,0.06); }
+  tbody tr { cursor: pointer; transition: background 0.12s; }
+  tbody tr:hover { background: rgba(255,255,255,0.03); }
+
+  .prod-mini {
+    display: flex; gap: 0.7rem; align-items: center;
+  }
+  .prod-thumb {
+    width: 36px; height: 36px; border-radius: 6px; flex: none;
+    background: linear-gradient(135deg, var(--t1, #dad3c4), var(--t2, #9b9180));
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(255,255,255,0.9); font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-size: 0.7rem;
+  }
+  .prod-thumb.lg { width: 76px; height: 76px; border-radius: 10px; font-size: 1.6rem; }
+  .prod-thumb.sm { width: 40px; height: 40px; border-radius: 8px; }
+  .prod-nm { color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 240px; }
+  .prod-sub { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: rgba(255,255,255,0.45); }
+  .price-2 { font-size: 11px; color: rgba(255,255,255,0.5); }
+  .stock-n.ok { color: var(--ok); }
+  .stock-n.warn { color: var(--warn); }
+  .stock-n.danger { color: var(--danger); }
+  .order-id { font-family: 'JetBrains Mono', monospace; color: var(--gold); }
+  .btn-icon {
+    background: transparent; border: none; color: var(--gold);
+    cursor: pointer; padding: 4px; font-size: 1rem;
+  }
+  .btn-link {
+    background: transparent; border: none; color: var(--gold);
+    cursor: pointer; font-family: inherit; font-size: 0.78rem; padding: 0;
+  }
+
+  /* MOVIMIENTOS */
+  .mov-item { padding: 0.8rem; background: var(--panel-2); border-radius: 8px; margin-bottom: 0.5rem; }
+  .mov-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+  .mov-date { font-size: 11px; color: var(--ink-faint); }
+  .mov-prod { font-size: 0.85rem; color: var(--ink); }
+  .mov-ref { font-size: 0.72rem; color: var(--ink-faint); }
+
+  /* AVATAR */
+  .avatar {
+    width: 34px; height: 34px; border-radius: 999px;
+    background: linear-gradient(135deg, #c9d3b8, #6f8a5e);
+    display: inline-flex; align-items: center; justify-content: center;
+    color: white; font-size: 12px; font-weight: 500;
+  }
+
+  /* CATEGORIAS CARDS */
+  .cat-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+  .cat-card { padding: 1.4rem; background: var(--panel); border: 1px solid var(--border); border-radius: 12px; display: flex; gap: 1rem; }
+  .cat-card .body { flex: 1; }
+  .cat-card .ttl { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; color: var(--ink); }
+  .cat-card .slug { font-size: 0.72rem; color: var(--ink-faint); font-family: 'JetBrains Mono', monospace; }
+  .cat-card .desc { font-size: 0.82rem; color: rgba(255,255,255,0.65); margin: 0.4rem 0 0.6rem; line-height: 1.5; }
+  .cat-card .row { display: flex; justify-content: space-between; align-items: flex-start; gap: 0.5rem; }
+
+  /* PANELS */
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* DRAWER */
+  .drawer-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+    z-index: 80; display: none; justify-content: flex-end;
+  }
+  .drawer-overlay.open { display: flex; }
+  .drawer {
+    width: min(560px, 100%); background: #25261f; color: var(--ink);
+    height: 100%; overflow: auto; padding: 1.8rem;
+  }
+  .drawer h2 { font-family: 'Cormorant Garamond', serif; font-weight: 500; font-size: 1.7rem; margin: 0.2rem 0 0; }
+  .drawer-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem; }
+  .close-btn { background: transparent; border: none; color: var(--ink); cursor: pointer; font-size: 1.4rem; }
+  .mini-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-bottom: 1.5rem; }
+  .mini { padding: 0.7rem 0.9rem; background: var(--panel); border-radius: 8px; }
+  .mini .l { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-faint); }
+  .mini .v { font-size: 0.88rem; color: var(--ink); margin-top: 2px; }
+  .state-btns { display: flex; gap: 0.4rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+
+  /* TOAST */
+  .toast {
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+    background: var(--gold); color: #1c1d18;
+    padding: 0.7rem 1.2rem; border-radius: 999px;
+    font-size: 0.85rem; font-weight: 500; z-index: 100;
+    opacity: 0; transition: opacity 0.25s, transform 0.25s;
+    pointer-events: none;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(-6px); }
+
+  /* RESPONSIVE */
+  @media (max-width: 960px) {
+    .shell { grid-template-columns: 1fr; }
+    aside.sidebar { position: static; height: auto; flex-direction: column; }
+    aside.sidebar nav { flex-direction: row; flex-wrap: wrap; overflow-x: auto; }
+    .sidebar-user { display: none; }
+    .kpis { grid-template-columns: repeat(2, 1fr); }
+    .row-2, .row-2b { grid-template-columns: 1fr; }
+    .cat-grid { grid-template-columns: 1fr; }
+    main { padding: 1.5rem 1.2rem 3rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <a href="index.html" class="brand">
+      <span class="brand-glyph"></span>
+      <span class="brand-name">vida<span class="amp">&amp;</span>cosmetic</span>
+    </a>
+    <div class="tracking-cap" style="margin-bottom:0.8rem;">Administración</div>
+    <nav id="sidebar-nav">
+      <button class="nav-btn active" data-panel="dashboard"><span class="ic">▤</span> Dashboard</button>
+      <button class="nav-btn" data-panel="productos"><span class="ic">▣</span> Productos</button>
+      <button class="nav-btn" data-panel="stock"><span class="ic">▦</span> Stock</button>
+      <button class="nav-btn" data-panel="pedidos"><span class="ic">⛟</span> Pedidos</button>
+      <button class="nav-btn" data-panel="usuarios"><span class="ic">☻</span> Usuarios</button>
+      <button class="nav-btn" data-panel="categorias"><span class="ic">⌗</span> Categorías</button>
+      <button class="nav-btn" data-panel="cursos"><span class="ic">✎</span> Cursos</button>
+    </nav>
+    <div class="sidebar-user">
+      <div class="nm">Lucía Vidal</div>
+      <div class="em">lucia@vidacosmetic.es</div>
+      <button class="btn-out" onclick="location.href='index.html'">↩ Salir</button>
+    </div>
+  </aside>
+
+  <main>
+
+    <!-- ════ DASHBOARD ════ -->
+    <section class="panel active" id="panel-dashboard">
+      <div class="page-header">
+        <div>
+          <div class="tracking-cap">Panel · 18 de mayo de 2026</div>
+          <h1>Buenas tardes, Lucía</h1>
+        </div>
+        <div class="actions">
+          <button class="btn-sm">🔔 5 alertas</button>
+          <button class="btn-sm primary">+ Nuevo producto</button>
+        </div>
+      </div>
+
+      <div class="kpis">
+        <div class="kpi"><div class="tracking-cap">Pedidos del mes</div><div class="v">6</div><div class="s">+12% vs abril</div></div>
+        <div class="kpi"><div class="tracking-cap">Facturación</div><div class="v">373,90 €</div><div class="s">+8% vs abril</div></div>
+        <div class="kpi"><div class="tracking-cap">Clientes activos</div><div class="v">4</div><div class="s">+3 nuevos</div></div>
+        <div class="kpi"><div class="tracking-cap">SKUs activos</div><div class="v">21</div><div class="s">9 destacados</div></div>
+      </div>
+
+      <div class="row-2">
+        <div class="card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+            <h3>Ventas — últimos 12 días</h3>
+            <span style="font-size:0.75rem; color:var(--ink-faint);">en €</span>
+          </div>
+          <div class="chart" id="chart"></div>
+        </div>
+        <div class="card">
+          <h3 style="margin-bottom:1rem;">Alertas de stock</h3>
+          <div>
+            <div class="alert-row"><div><div class="nm">Ácido Glicólico 70%</div><div class="mn">Mín: 3</div></div><span class="pill danger">0 uds</span></div>
+            <div class="alert-row"><div><div class="nm">Aceite de Argán Marroquí</div><div class="mn">Mín: 3</div></div><span class="pill warn">2 uds</span></div>
+            <div class="alert-row"><div><div class="nm">Ácido Mandélico</div><div class="mn">Mín: 5</div></div><span class="pill warn">3 uds</span></div>
+            <div class="alert-row"><div><div class="nm">Extracto de Té Verde</div><div class="mn">Mín: 5</div></div><span class="pill warn">9 uds</span></div>
+            <div class="alert-row"><div><div class="nm">Shampoo Anti-caída</div><div class="mn">Mín: 3</div></div><span class="pill warn">8 uds</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row-2b">
+        <div class="card">
+          <div style="display:flex; justify-content:space-between; margin-bottom:1rem;">
+            <h3>Pedidos recientes</h3>
+            <button class="btn-link" onclick="show('pedidos')">Ver todos</button>
+          </div>
+          <div id="dash-orders"></div>
+        </div>
+        <div class="card">
+          <h3 style="margin-bottom:1rem;">Top productos del mes</h3>
+          <div id="dash-top"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════ PRODUCTOS ════ -->
+    <section class="panel" id="panel-productos">
+      <div class="page-header">
+        <div>
+          <div class="tracking-cap">Catálogo</div>
+          <h1 style="font-size:2rem;">Productos</h1>
+        </div>
+        <button class="btn-sm primary" onclick="openProd(null)">+ Nuevo producto</button>
+      </div>
+      <div class="toolbar">
+        <input class="input" id="prod-search" placeholder="Buscar por nombre o INCI…" />
+        <select class="select" id="prod-cat">
+          <option value="">Todas las categorías</option>
+          <option value="acidos">Ácidos cosméticos</option>
+          <option value="ceras">Ceras y emulsionantes</option>
+          <option value="extractos">Extractos botánicos</option>
+          <option value="aceites">Aceites y mantecas</option>
+          <option value="envases">Envases y complementos</option>
+          <option value="pigmentos">Pigmentos y colorantes</option>
+        </select>
+      </div>
+      <div class="table-wrap"><div class="table-scroll">
+        <table id="prod-table">
+          <thead>
+            <tr>
+              <th>Producto</th><th>Categoría</th><th>Precio</th><th>Stock</th><th>Estado</th><th></th>
+            </tr>
+          </thead>
+          <tbody id="prod-body"></tbody>
+        </table>
+      </div></div>
+    </section>
+
+    <!-- ════ STOCK ════ -->
+    <section class="panel" id="panel-stock">
+      <div class="page-header">
+        <div>
+          <div class="tracking-cap">Inventario</div>
+          <h1 style="font-size:2rem;">Stock y movimientos</h1>
+        </div>
+      </div>
+      <div class="row-2">
+        <div class="card" style="padding:0;">
+          <div style="padding:1rem 1.2rem; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem;">
+            <h3>Stock actual</h3>
+            <div class="chips" id="stock-chips">
+              <button class="chip active" data-f="todos">Todos</button>
+              <button class="chip" data-f="bajo">Bajo</button>
+              <button class="chip" data-f="agotado">Agotado</button>
+            </div>
+          </div>
+          <div style="max-height:500px; overflow:auto;" id="stock-list"></div>
+        </div>
+        <div class="card">
+          <h3 style="margin-bottom:1rem;">Movimientos recientes</h3>
+          <div id="mov-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════ PEDIDOS ════ -->
+    <section class="panel" id="panel-pedidos">
+      <div class="page-header">
+        <div>
+          <div class="tracking-cap">Operaciones</div>
+          <h1 style="font-size:2rem;">Pedidos</h1>
+        </div>
+      </div>
+      <div class="chips" id="ped-chips" style="margin-bottom:1rem;"></div>
+      <div class="table-wrap"><div class="table-scroll">
+        <table id="ped-table">
+          <thead>
+            <tr>
+              <th>Pedido</th><th>Cliente</th><th>Fecha</th><th>Pago</th><th>Estado</th><th>Total</th><th></th>
+            </tr>
+          </thead>
+          <tbody id="ped-body"></tbody>
+        </table>
+      </div></div>
+    </section>
+
+    <!-- ════ USUARIOS ════ -->
+    <section class="panel" id="panel-usuarios">
+      <div class="page-header">
+        <div>
+          <div class="tracking-cap">Comunidad</div>
+          <h1 style="font-size:2rem;">Usuarios</h1>
+        </div>
+      </div>
+      <div class="table-wrap"><div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>Usuario</th><th>Email</th><th>Teléfono</th><th>Pedidos</th><th>Gastado</th><th>Rol</th><th>Desde</th>
+            </tr>
+          </thead>
+          <tbody id="usr-body"></tbody>
+        </table>
+      </div></div>
+    </section>
+
+    <!-- ════ CATEGORIAS ════ -->
+    <section class="panel" id="panel-categorias">
+      <div class="page-header">
+        <div>
+          <div class="tracking-cap">Taxonomía</div>
+          <h1 style="font-size:2rem;">Categorías</h1>
+        </div>
+        <button class="btn-sm primary">+ Nueva categoría</button>
+      </div>
+      <div class="cat-grid" id="cat-grid"></div>
+    </section>
+
+    <!-- ════ CURSOS ════ -->
+    <section class="panel" id="panel-cursos">
+      <div class="page-header">
+        <div>
+          <div class="tracking-cap">Servicios</div>
+          <h1 style="font-size:2rem;">Cursos y asesorías</h1>
+        </div>
+        <button class="btn-sm primary">+ Nuevo</button>
+      </div>
+      <div class="table-wrap"><div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>Título</th><th>Tipo</th><th>Duración</th><th>Precio</th><th>Disponible</th><th></th>
+            </tr>
+          </thead>
+          <tbody id="cur-body"></tbody>
+        </table>
+      </div></div>
+    </section>
+
+  </main>
+</div>
+
+<!-- DRAWERS -->
+<div class="drawer-overlay" id="drawer-prod">
+  <div class="drawer">
+    <div class="drawer-head">
+      <div><div class="tracking-cap">Catálogo</div><h2 id="prod-title">Editar producto</h2></div>
+      <button class="close-btn" onclick="closeDrawer('drawer-prod')">×</button>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:1rem;">
+      <div><div class="tracking-cap" style="margin-bottom:0.3rem;">Nombre</div><input class="input" id="ef-nombre" /></div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.8rem;">
+        <div><div class="tracking-cap" style="margin-bottom:0.3rem;">Precio (€)</div><input class="input" id="ef-precio" /></div>
+        <div><div class="tracking-cap" style="margin-bottom:0.3rem;">Unidad</div><input class="input" id="ef-unidad" /></div>
+        <div><div class="tracking-cap" style="margin-bottom:0.3rem;">Stock</div><input class="input" id="ef-stock" /></div>
+        <div><div class="tracking-cap" style="margin-bottom:0.3rem;">Stock mín.</div><input class="input" id="ef-min" /></div>
+      </div>
+      <div><div class="tracking-cap" style="margin-bottom:0.3rem;">INCI / técnico</div><input class="input" id="ef-inci" /></div>
+      <div><div class="tracking-cap" style="margin-bottom:0.3rem;">Descripción</div><textarea class="textarea" id="ef-desc" rows="3" style="width:100%;"></textarea></div>
+      <div style="display:flex; gap:1rem;">
+        <label style="display:flex; align-items:center; gap:6px; font-size:0.88rem;"><input type="checkbox" id="ef-activo" checked /> Activo</label>
+        <label style="display:flex; align-items:center; gap:6px; font-size:0.88rem;"><input type="checkbox" id="ef-destacado" /> Destacado</label>
+      </div>
+    </div>
+    <div style="display:flex; gap:0.6rem; margin-top:2rem; justify-content:flex-end;">
+      <button class="btn-sm" onclick="closeDrawer('drawer-prod')">Cancelar</button>
+      <button class="btn-sm primary" onclick="closeDrawer('drawer-prod'); toast('Cambios guardados');">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<div class="drawer-overlay" id="drawer-ped">
+  <div class="drawer" id="ped-drawer-body"></div>
+</div>
+
+<div class="toast" id="toast">Cambios guardados</div>
+
+<script>
+// ───── DATA ─────
+const TINTS = {
+  acidos:['#e7d9c4','#d8c4a5'], ceras:['#efe3d0','#d9c8ad'],
+  extractos:['#c9d3b8','#aab896'], aceites:['#e9d6a6','#cdb37a'],
+  envases:['#dad3c4','#bdb4a2'], pigmentos:['#d9bfae','#b9967d'],
+};
+const CAT_LABEL = {
+  acidos:'Ácidos cosméticos', ceras:'Ceras y emulsionantes',
+  extractos:'Extractos botánicos', aceites:'Aceites y mantecas',
+  envases:'Envases y complementos', pigmentos:'Pigmentos y colorantes',
+};
+const CATS = [
+  {id:'acidos',nombre:'Ácidos cosméticos',slug:'acidos',tipo:'insumos',descripcion:'Activos para exfoliación, hidratación y renovación celular.'},
+  {id:'ceras',nombre:'Ceras y emulsionantes',slug:'ceras',tipo:'insumos',descripcion:'Estructura, textura y estabilidad para cremas y bálsamos.'},
+  {id:'extractos',nombre:'Extractos botánicos',slug:'extractos',tipo:'insumos',descripcion:'Concentrados vegetales para enriquecer tus fórmulas.'},
+  {id:'aceites',nombre:'Aceites y mantecas',slug:'aceites',tipo:'insumos',descripcion:'Bases nutritivas, vírgenes y prensadas en frío.'},
+  {id:'envases',nombre:'Envases y complementos',slug:'envases',tipo:'complementos',descripcion:'Frascos, pipetas, etiquetas y herramientas.'},
+  {id:'pigmentos',nombre:'Pigmentos y colorantes',slug:'pigmentos',tipo:'insumos',descripcion:'Tonos minerales y vegetales aptos cosmético.'},
+];
+const PRODUCTOS = [
+  {id:'p001',nombre:'Ácido Hialurónico (Bajo PM)',cat:'acidos',precio:14.50,unidad:'10 g',stock:24,stockMin:5,act:true,dest:true,inci:'Sodium Hyaluronate'},
+  {id:'p002',nombre:'Ácido Salicílico USP',cat:'acidos',precio:6.20,unidad:'25 g',stock:12,stockMin:4,act:true,dest:false,inci:'Salicylic Acid'},
+  {id:'p003',nombre:'Ácido Mandélico',cat:'acidos',precio:11.90,unidad:'30 g',stock:3,stockMin:5,act:true,dest:true,inci:'Mandelic Acid'},
+  {id:'p004',nombre:'Ácido Glicólico 70%',cat:'acidos',precio:8.40,unidad:'50 ml',stock:0,stockMin:3,act:true,dest:false,inci:'Glycolic Acid'},
+  {id:'p005',nombre:'Cera Emulsionante Nº 2',cat:'ceras',precio:4.80,unidad:'100 g',stock:48,stockMin:10,act:true,dest:false,inci:'Cetearyl Alcohol & Polysorbate 60'},
+  {id:'p006',nombre:'Cera de Abeja Blanca',cat:'ceras',precio:5.50,unidad:'100 g',stock:30,stockMin:8,act:true,dest:true,inci:'Cera Alba'},
+  {id:'p007',nombre:'Alcohol Cetílico',cat:'ceras',precio:3.90,unidad:'100 g',stock:22,stockMin:5,act:true,dest:false,inci:'Cetyl Alcohol'},
+  {id:'p008',nombre:'Extracto de Caléndula',cat:'extractos',precio:7.20,unidad:'30 ml',stock:18,stockMin:5,act:true,dest:true,inci:'Calendula Officinalis Extract'},
+  {id:'p009',nombre:'Extracto de Té Verde',cat:'extractos',precio:6.80,unidad:'30 ml',stock:9,stockMin:5,act:true,dest:false,inci:'Camellia Sinensis Extract'},
+  {id:'p010',nombre:'Extracto de Centella Asiática',cat:'extractos',precio:9.10,unidad:'30 ml',stock:14,stockMin:5,act:true,dest:false,inci:'Centella Asiatica Extract'},
+  {id:'p011',nombre:'Aceite de Jojoba Virgen',cat:'aceites',precio:12.40,unidad:'100 ml',stock:26,stockMin:6,act:true,dest:true,inci:'Simmondsia Chinensis Oil'},
+  {id:'p012',nombre:'Aceite de Rosa Mosqueta',cat:'aceites',precio:16.90,unidad:'50 ml',stock:11,stockMin:4,act:true,dest:true,inci:'Rosa Moschata Seed Oil'},
+  {id:'p013',nombre:'Manteca de Karité Nilótica',cat:'aceites',precio:8.60,unidad:'100 g',stock:32,stockMin:8,act:true,dest:false,inci:'Butyrospermum Parkii'},
+  {id:'p014',nombre:'Aceite de Argán Marroquí',cat:'aceites',precio:18.50,unidad:'50 ml',stock:2,stockMin:3,act:true,dest:false,inci:'Argania Spinosa Oil'},
+  {id:'p015',nombre:'Frasco Ámbar 30 ml',cat:'envases',precio:1.80,unidad:'ud.',stock:120,stockMin:30,act:true,dest:false,inci:'Vidrio borosilicato'},
+  {id:'p016',nombre:'Tarro Airless 50 ml',cat:'envases',precio:3.40,unidad:'ud.',stock:56,stockMin:15,act:true,dest:true,inci:'PP/PE blanco mate'},
+  {id:'p017',nombre:'Pipetas Pasteur 3 ml',cat:'envases',precio:4.20,unidad:'pack',stock:40,stockMin:10,act:true,dest:false,inci:'LDPE'},
+  {id:'p018',nombre:'Óxido de Zinc Cosmético',cat:'pigmentos',precio:4.10,unidad:'100 g',stock:19,stockMin:5,act:true,dest:false,inci:'Zinc Oxide'},
+  {id:'p019',nombre:'Mica Champagne Gold',cat:'pigmentos',precio:5.90,unidad:'25 g',stock:14,stockMin:4,act:true,dest:true,inci:'Mica, CI 77891'},
+  {id:'p020',nombre:'Jabón de Jojoba (Base SCI)',cat:'ceras',precio:6.40,unidad:'250 g',stock:16,stockMin:5,act:true,dest:true,inci:'SCI, Coco Glucoside, Jojoba Oil'},
+  {id:'p021',nombre:'Shampoo Anti-caída',cat:'extractos',precio:9.80,unidad:'500 ml',stock:8,stockMin:3,act:true,dest:true,inci:'Coco Glucoside, Decyl Glucoside, Glycerin'},
+];
+const PEDIDOS = [
+  {id:'VC-2407',cliente:'Marta Salas',total:47.30,estado:'enviado',metodo:'Tarjeta · Stripe',fecha:'18 mayo 2026',items:4},
+  {id:'VC-2406',cliente:'Inés Caro',total:23.10,estado:'pendiente',metodo:'Bizum',fecha:'18 mayo 2026',items:2},
+  {id:'VC-2405',cliente:'Pau Renart',total:138.40,estado:'confirmado',metodo:'Tarjeta · Stripe',fecha:'17 mayo 2026',items:9},
+  {id:'VC-2404',cliente:'Marta Salas',total:11.90,estado:'entregado',metodo:'Tarjeta · Stripe',fecha:'12 mayo 2026',items:1},
+  {id:'VC-2403',cliente:'Claudia Bermejo',total:89.00,estado:'entregado',metodo:'Transferencia',fecha:'8 mayo 2026',items:1},
+  {id:'VC-2402',cliente:'Inés Caro',total:64.20,estado:'cancelado',metodo:'Tarjeta · Stripe',fecha:'5 mayo 2026',items:5},
+];
+const USUARIOS = [
+  {uid:'u-marta',nombre:'Marta Salas',email:'marta.salas@correo.es',tel:'+34 612 348 220',rol:'cliente',pedidos:7,gastado:312.40,desde:'feb 2024'},
+  {uid:'u-ines',nombre:'Inés Caro',email:'ines@dermosur.es',tel:'+34 698 102 559',rol:'cliente',pedidos:3,gastado:99.30,desde:'ene 2026'},
+  {uid:'u-pau',nombre:'Pau Renart',email:'pau.renart@gmail.com',tel:'+34 671 800 142',rol:'cliente',pedidos:14,gastado:1842.00,desde:'jun 2022'},
+  {uid:'u-claudia',nombre:'Claudia Bermejo',email:'claudia.b@labelle.cat',tel:'+34 622 401 778',rol:'cliente',pedidos:2,gastado:145.00,desde:'mar 2026'},
+  {uid:'u-lucia',nombre:'Lucía Vidal',email:'lucia@vidacosmetic.es',tel:'+34 600 100 200',rol:'admin',pedidos:0,gastado:0,desde:'mar 2018'},
+];
+const MOVS = [
+  {fecha:'18 mayo 2026, 14:22',producto:'Ácido Hialurónico (Bajo PM)',tipo:'salida',cantidad:2,ref:'VC-2407'},
+  {fecha:'18 mayo 2026, 11:08',producto:'Cera de Abeja Blanca',tipo:'entrada',cantidad:30,ref:'Proveedor BIOIBÉRICA'},
+  {fecha:'17 mayo 2026, 19:54',producto:'Frasco Ámbar 30 ml',tipo:'salida',cantidad:6,ref:'VC-2405'},
+  {fecha:'17 mayo 2026, 09:33',producto:'Aceite de Argán Marroquí',tipo:'ajuste',cantidad:-1,ref:'Rotura en almacén'},
+  {fecha:'15 mayo 2026, 10:12',producto:'Mica Champagne Gold',tipo:'entrada',cantidad:50,ref:'Pigmentos Iberia'},
+];
+const CURSOS = [
+  {id:'c1',titulo:'Formulación de Cremas Hidratantes',tipo:'curso',precio:89,duracion:'4 sesiones · 8 h',disponible:true},
+  {id:'c2',titulo:'Asesoría Personalizada 1:1',tipo:'asesoria',precio:45,duracion:'60 min · online',disponible:true},
+  {id:'c3',titulo:'Jabones Naturales en Frío',tipo:'curso',precio:65,duracion:'3 sesiones · 6 h',disponible:true},
+  {id:'c4',titulo:'Cosmética Capilar Avanzada',tipo:'curso',precio:110,duracion:'5 sesiones · 10 h',disponible:false},
+];
+
+const fmt = n => Number(n).toFixed(2).replace('.', ',') + ' €';
+const initials = nm => nm.split(' ').slice(0,2).map(w=>w[0]).join('');
+const stockClass = p => p.stock===0 ? 'danger' : p.stock<=p.stockMin ? 'warn' : 'ok';
+
+// ───── PANEL SWITCH ─────
+function show(panel) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + panel).classList.add('active');
+  document.querySelector(`[data-panel="${panel}"]`).classList.add('active');
+}
+document.getElementById('sidebar-nav').addEventListener('click', e => {
+  const b = e.target.closest('[data-panel]');
+  if (b) show(b.dataset.panel);
+});
+
+// ───── DASHBOARD ─────
+const chartData = [38,52,41,64,73,49,87,71,92,68,104,88];
+const chartLabels = ['7','8','9','10','11','12','13','14','15','16','17','18'];
+const maxC = Math.max(...chartData);
+document.getElementById('chart').innerHTML = chartData.map((v,i) => `
+  <div class="col">
+    <div class="bar-wrap"><div class="bar ${i===chartData.length-1?'last':''}" style="height:${(v/maxC)*100}%;"></div></div>
+    <div class="lab">${chartLabels[i]}</div>
+  </div>`).join('');
+
+const orderPill = e => {
+  const map = {pendiente:'warn',confirmado:'info',enviado:'info',entregado:'ok',cancelado:'danger'};
+  return `<span class="pill ${map[e]||'muted'}">${e}</span>`;
+};
+document.getElementById('dash-orders').innerHTML = PEDIDOS.slice(0,5).map(p => `
+  <div class="order-row">
+    <div style="flex:1; min-width:0;">
+      <div class="id">${p.id}</div>
+      <div class="cli">${p.cliente}</div>
+    </div>
+    ${orderPill(p.estado)}
+    <div class="tot">${fmt(p.total)}</div>
+  </div>`).join('');
+
+document.getElementById('dash-top').innerHTML = PRODUCTOS.filter(p=>p.dest).slice(0,5).map((p,i) => `
+  <div class="top-row">
+    <div class="num" style="--t1:${TINTS[p.cat][0]}; --t2:${TINTS[p.cat][1]};">${i+1}</div>
+    <div style="flex:1; min-width:0;">
+      <div class="nm">${p.nombre}</div>
+      <div class="pr">${fmt(p.precio)} · ${p.unidad}</div>
+    </div>
+    <div class="vts">${8 + Math.floor(Math.random()*30)} vts</div>
+  </div>`).join('');
+
+// ───── PRODUCTOS ─────
+function renderProductos() {
+  const q = document.getElementById('prod-search').value.toLowerCase();
+  const cf = document.getElementById('prod-cat').value;
+  const rows = PRODUCTOS
+    .filter(p => !q || p.nombre.toLowerCase().includes(q) || p.inci.toLowerCase().includes(q))
+    .filter(p => !cf || p.cat === cf)
+    .map(p => `
+      <tr onclick="openProd('${p.id}')">
+        <td><div class="prod-mini">
+          <div class="prod-thumb" style="--t1:${TINTS[p.cat][0]}; --t2:${TINTS[p.cat][1]};">${initials(p.nombre)}</div>
+          <div><div class="prod-nm">${p.nombre}</div><div class="prod-sub">${p.id} · ${p.inci}</div></div>
+        </div></td>
+        <td style="color:var(--ink-mute);">${CAT_LABEL[p.cat]}</td>
+        <td>${fmt(p.precio)}<div class="price-2">/ ${p.unidad}</div></td>
+        <td><span class="stock-n ${stockClass(p)}">${p.stock} uds</span></td>
+        <td><span class="pill ${p.act?'ok':'muted'}">${p.act?'Activo':'Inactivo'}</span> ${p.dest?'<span class="pill info">★</span>':''}</td>
+        <td><button class="btn-icon" onclick="event.stopPropagation(); openProd('${p.id}')">✎</button></td>
+      </tr>`).join('');
+  document.getElementById('prod-body').innerHTML = rows || '<tr><td colspan="6" style="text-align:center; padding:2rem; color:var(--ink-faint);">Sin resultados</td></tr>';
+}
+document.getElementById('prod-search').addEventListener('input', renderProductos);
+document.getElementById('prod-cat').addEventListener('change', renderProductos);
+renderProductos();
+
+function openProd(id) {
+  const p = id ? PRODUCTOS.find(x=>x.id===id) : {nombre:'',precio:'',unidad:'100 g',stock:'',stockMin:5,inci:'',act:true,dest:false};
+  document.getElementById('prod-title').textContent = id ? 'Editar producto' : 'Nuevo producto';
+  document.getElementById('ef-nombre').value = p.nombre;
+  document.getElementById('ef-precio').value = p.precio;
+  document.getElementById('ef-unidad').value = p.unidad;
+  document.getElementById('ef-stock').value = p.stock;
+  document.getElementById('ef-min').value = p.stockMin;
+  document.getElementById('ef-inci').value = p.inci;
+  document.getElementById('ef-desc').value = '';
+  document.getElementById('ef-activo').checked = p.act;
+  document.getElementById('ef-destacado').checked = p.dest;
+  document.getElementById('drawer-prod').classList.add('open');
+}
+
+// ───── STOCK ─────
+let stockFilter = 'todos';
+function renderStock() {
+  const list = stockFilter === 'todos' ? PRODUCTOS
+    : stockFilter === 'bajo' ? PRODUCTOS.filter(p => p.stock > 0 && p.stock <= p.stockMin)
+    : PRODUCTOS.filter(p => p.stock === 0);
+  document.getElementById('stock-list').innerHTML = list.map(p => `
+    <div style="padding:0.85rem 1.2rem; border-top:1px solid rgba(255,255,255,0.06); display:flex; align-items:center; gap:0.8rem;">
+      <div class="prod-thumb" style="--t1:${TINTS[p.cat][0]}; --t2:${TINTS[p.cat][1]};">${initials(p.nombre)}</div>
+      <div style="flex:1; min-width:0;">
+        <div style="color:var(--ink); font-size:0.88rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${p.nombre}</div>
+        <div style="font-size:0.72rem; color:var(--ink-faint);">Mín: ${p.stockMin} · ${p.unidad}</div>
+      </div>
+      <div class="font-serif stock-n ${stockClass(p)}" style="font-size:1.3rem;">${p.stock}</div>
+      <button class="btn-link">+ Entrada</button>
+    </div>`).join('');
+}
+document.getElementById('stock-chips').addEventListener('click', e => {
+  const b = e.target.closest('[data-f]'); if (!b) return;
+  document.querySelectorAll('#stock-chips .chip').forEach(x => x.classList.remove('active'));
+  b.classList.add('active');
+  stockFilter = b.dataset.f;
+  renderStock();
+});
+renderStock();
+
+document.getElementById('mov-list').innerHTML = MOVS.map(m => `
+  <div class="mov-item">
+    <div class="mov-head">
+      <span class="pill ${m.tipo==='entrada'?'ok':m.tipo==='salida'?'info':'warn'}">${m.tipo==='entrada'?'↑ Entrada':m.tipo==='salida'?'↓ Salida':'⟳ Ajuste'} ${Math.abs(m.cantidad)}</span>
+      <span class="mov-date">${m.fecha}</span>
+    </div>
+    <div class="mov-prod">${m.producto}</div>
+    <div class="mov-ref">${m.ref}</div>
+  </div>`).join('');
+
+// ───── PEDIDOS ─────
+let pedFilter = 'todos';
+const ESTADOS = ['pendiente','confirmado','enviado','entregado','cancelado'];
+document.getElementById('ped-chips').innerHTML = [
+  ['todos','Todos',PEDIDOS.length],
+  ...ESTADOS.map(s => [s, s.charAt(0).toUpperCase()+s.slice(1)+'s', PEDIDOS.filter(p=>p.estado===s).length])
+].map(([k,l,n]) => `<button class="chip ${k==='todos'?'active':''}" data-f="${k}">${l} <span class="n">· ${n}</span></button>`).join('');
+
+function renderPedidos() {
+  const items = pedFilter === 'todos' ? PEDIDOS : PEDIDOS.filter(p => p.estado === pedFilter);
+  document.getElementById('ped-body').innerHTML = items.map(p => `
+    <tr onclick="openPed('${p.id}')">
+      <td><span class="order-id">${p.id}</span></td>
+      <td><div style="color:var(--ink);">${p.cliente}</div><div style="font-size:11px; color:var(--ink-faint);">${p.items} ítems</div></td>
+      <td style="color:var(--ink-mute);">${p.fecha}</td>
+      <td style="color:var(--ink-mute);">${p.metodo}</td>
+      <td>${orderPill(p.estado)}</td>
+      <td style="color:var(--ink); font-weight:500;">${fmt(p.total)}</td>
+      <td style="color:var(--ink-faint);">›</td>
+    </tr>`).join('');
+}
+document.getElementById('ped-chips').addEventListener('click', e => {
+  const b = e.target.closest('[data-f]'); if (!b) return;
+  document.querySelectorAll('#ped-chips .chip').forEach(x => x.classList.remove('active'));
+  b.classList.add('active');
+  pedFilter = b.dataset.f;
+  renderPedidos();
+});
+renderPedidos();
+
+function openPed(id) {
+  const p = PEDIDOS.find(x => x.id === id);
+  const sample = PRODUCTOS.slice(0, p.items);
+  document.getElementById('ped-drawer-body').innerHTML = `
+    <div class="drawer-head">
+      <div><div class="tracking-cap">Pedido</div><h2>${p.id}</h2></div>
+      <button class="close-btn" onclick="closeDrawer('drawer-ped')">×</button>
+    </div>
+    <div class="mini-grid">
+      <div class="mini"><div class="l">Cliente</div><div class="v">${p.cliente}</div></div>
+      <div class="mini"><div class="l">Fecha</div><div class="v">${p.fecha}</div></div>
+      <div class="mini"><div class="l">Pago</div><div class="v">${p.metodo}</div></div>
+      <div class="mini"><div class="l">Total</div><div class="v">${fmt(p.total)}</div></div>
+    </div>
+    <div class="tracking-cap" style="margin-bottom:0.7rem;">Estado</div>
+    <div class="state-btns">
+      ${ESTADOS.map(s => `<button class="chip ${p.estado===s?'active':''}" onclick="toast('Estado cambiado a ${s}')">${s}</button>`).join('')}
+    </div>
+    <div class="tracking-cap" style="margin-bottom:0.7rem;">Detalle</div>
+    <div style="margin-bottom:1.2rem;">
+      ${sample.map(prod => `
+        <div style="padding:0.7rem 0; display:flex; gap:0.7rem; align-items:center; border-top:1px solid var(--border);">
+          <div class="prod-thumb" style="--t1:${TINTS[prod.cat][0]}; --t2:${TINTS[prod.cat][1]};">${initials(prod.nombre)}</div>
+          <div style="flex:1;">
+            <div style="font-size:0.85rem;">${prod.nombre}</div>
+            <div style="font-size:0.72rem; color:var(--ink-faint);">× ${Math.ceil(Math.random()*3)} · ${prod.unidad}</div>
+          </div>
+          <div style="font-size:0.85rem;">${fmt(prod.precio)}</div>
+        </div>`).join('')}
+    </div>
+    <button class="btn-sm primary" style="width:100%;">Generar guía de envío</button>
+  `;
+  document.getElementById('drawer-ped').classList.add('open');
+}
+
+// ───── USUARIOS ─────
+document.getElementById('usr-body').innerHTML = USUARIOS.map(u => `
+  <tr>
+    <td><div class="prod-mini"><div class="avatar">${initials(u.nombre)}</div><span style="color:var(--ink);">${u.nombre}</span></div></td>
+    <td style="color:var(--ink-mute);">${u.email}</td>
+    <td style="color:var(--ink-faint);">${u.tel}</td>
+    <td style="color:var(--ink);">${u.pedidos}</td>
+    <td style="color:var(--ink);">${fmt(u.gastado)}</td>
+    <td><span class="pill ${u.rol==='admin'?'info':'muted'}">${u.rol}</span></td>
+    <td style="color:var(--ink-faint);">${u.desde}</td>
+  </tr>`).join('');
+
+// ───── CATEGORIAS ─────
+document.getElementById('cat-grid').innerHTML = CATS.map(c => {
+  const count = PRODUCTOS.filter(p => p.cat === c.id).length;
+  return `
+    <div class="cat-card">
+      <div class="prod-thumb lg" style="--t1:#dfe7d4; --t2:#6f8a5e;">${c.nombre[0]}</div>
+      <div class="body">
+        <div class="row">
+          <div>
+            <div class="ttl">${c.nombre}</div>
+            <div class="slug">/insumos/${c.slug}</div>
+          </div>
+          <button class="btn-icon">✎</button>
+        </div>
+        <p class="desc">${c.descripcion}</p>
+        <div style="display:flex; gap:0.4rem;">
+          <span class="pill muted">${count} productos</span>
+          <span class="pill info">${c.tipo}</span>
+        </div>
+      </div>
+    </div>`;
+}).join('');
+
+// ───── CURSOS ─────
+document.getElementById('cur-body').innerHTML = CURSOS.map(c => `
+  <tr>
+    <td style="color:var(--ink);">${c.titulo}</td>
+    <td><span class="pill muted">${c.tipo==='curso'?'Curso':'Asesoría'}</span></td>
+    <td style="color:var(--ink-mute);">${c.duracion}</td>
+    <td style="color:var(--ink);">${fmt(c.precio)}</td>
+    <td><span class="pill ${c.disponible?'ok':'warn'}">${c.disponible?'Sí':'Próximamente'}</span></td>
+    <td><button class="btn-icon">✎</button></td>
+  </tr>`).join('');
+
+// ───── DRAWERS / TOAST ─────
+function closeDrawer(id) { document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.drawer-overlay').forEach(d => {
+  d.addEventListener('click', e => { if (e.target === d) d.classList.remove('open'); });
+});
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toast._t);
+  toast._t = setTimeout(() => t.classList.remove('show'), 2400);
+}
+</script>
+
+</body>
+</html>

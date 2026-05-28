@@ -1,0 +1,55 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() { return request.auth != null; }
+    function isOwner(uid) { return isSignedIn() && request.auth.uid == uid; }
+    function isAdmin() {
+      return isSignedIn()
+        && exists(/databases/$(database)/documents/usuarios/$(request.auth.uid))
+        && get(/databases/$(database)/documents/usuarios/$(request.auth.uid)).data.rol == 'admin';
+    }
+
+    match /productos/{id} {
+      allow read: if resource.data.activo == true || isAdmin();
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /categorias/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /usuarios/{uid} {
+      allow read: if isOwner(uid) || isAdmin();
+      allow create: if isOwner(uid) && request.resource.data.rol == 'cliente';
+      // rol nunca editable desde cliente — solo Functions/admin
+      allow update: if (isOwner(uid) && request.resource.data.rol == resource.data.rol)
+                    || isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    match /carrito/{uid} {
+      allow read, write: if isOwner(uid) || isAdmin();
+    }
+
+    match /pedidos/{id} {
+      allow read: if isSignedIn()
+        && (resource.data.usuarioId == request.auth.uid || isAdmin());
+      // pedidos solo creados/modificados por Cloud Functions o admin
+      allow create: if isAdmin();
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    match /stock_movimientos/{id} {
+      allow read: if isAdmin();
+      allow write: if isAdmin();
+    }
+
+    match /cursos_asesorias/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+  }
+}

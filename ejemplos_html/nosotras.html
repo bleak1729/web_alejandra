@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Nosotras — Vidacosmetic&amp;mas</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+<style>
+  :root {
+    --bg: #f6f1e7;
+    --bg-soft: #efe8d8;
+    --ink: #2a2820;
+    --ink-soft: #6b665a;
+    --sage: #6f8a5e;
+    --sage-deep: #4d6541;
+    --sage-tint: #dfe7d4;
+    --gold: #c9a96e;
+    --border: rgba(42,40,32,0.12);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); }
+  body { font-family: 'Inter', sans-serif; font-weight: 400; line-height: 1.6; }
+  a { color: inherit; text-decoration: none; }
+  .font-serif { font-family: 'Cormorant Garamond', serif; font-weight: 500; }
+  .font-serif-italic { font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 500; }
+  .tracking-cap {
+    text-transform: uppercase; letter-spacing: 0.18em; font-size: 0.7rem;
+    font-weight: 500; color: var(--sage-deep);
+  }
+
+  /* ───── NAV ───── */
+  .topnav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 2.5rem; border-bottom: 1px solid var(--border);
+    background: var(--bg); position: sticky; top: 0; z-index: 50;
+  }
+  .brand { display: flex; align-items: center; gap: 0.6rem; }
+  .brand-glyph {
+    width: 22px; height: 22px; border-radius: 999px;
+    background: radial-gradient(circle at 30% 30%, var(--sage-tint), var(--sage));
+  }
+  .brand-name { font-family: 'Cormorant Garamond', serif; font-size: 1.35rem; }
+  .brand-name .amp { color: var(--sage-deep); font-style: italic; }
+  .nav-links { display: flex; gap: 2rem; font-size: 0.88rem; }
+  .nav-links a { color: var(--ink-soft); transition: color 0.15s; }
+  .nav-links a:hover, .nav-links a.active { color: var(--ink); }
+  .nav-links a.active { font-weight: 500; }
+  .nav-actions { display: flex; gap: 0.6rem; align-items: center; color: var(--ink-soft); }
+  .nav-actions span { cursor: pointer; padding: 0.4rem; }
+
+  /* ───── LAYOUT ───── */
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 1.6rem; }
+  .breadcrumb { font-size: 0.78rem; color: var(--ink-soft); padding-top: 2rem; }
+  .breadcrumb a { color: var(--ink-soft); }
+  .breadcrumb .sep { margin: 0 0.5rem; opacity: 0.5; }
+
+  /* ───── HERO ───── */
+  .hero { text-align: center; margin: 2.5rem 0 3rem; }
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif; font-weight: 500;
+    font-size: 4.2rem; line-height: 1.05; margin: 0.7rem 0 1.2rem;
+  }
+  .hero p {
+    color: var(--ink-soft); max-width: 620px; margin: 0 auto;
+    line-height: 1.7; font-size: 1rem;
+  }
+
+  /* ───── HERO IMAGE PLACEHOLDER ───── */
+  .hero-img {
+    width: 100%; aspect-ratio: 16/8; border-radius: 18px;
+    background: linear-gradient(135deg, var(--sage-tint), var(--sage));
+    position: relative; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .hero-img::before {
+    content: ''; position: absolute; inset: 0;
+    background-image: repeating-linear-gradient(45deg, transparent 0 12px, rgba(255,255,255,0.06) 12px 13px);
+  }
+  .hero-img .glyph {
+    font-family: 'Cormorant Garamond', serif; font-style: italic;
+    font-size: 2.4rem; color: rgba(255,255,255,0.85); z-index: 1;
+  }
+  .hero-img .label-chip {
+    position: absolute; bottom: 14px; right: 14px;
+    background: rgba(0,0,0,0.4); color: white; font-size: 0.7rem;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    padding: 4px 8px; border-radius: 6px; z-index: 1;
+  }
+
+  /* ───── COLUMNS ───── */
+  .two-col {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 3rem; margin-top: 3.5rem;
+  }
+  .two-col h2 {
+    font-family: 'Cormorant Garamond', serif; font-weight: 500;
+    font-size: 2rem; margin: 0 0 1rem;
+  }
+  .two-col p, .two-col ul { color: var(--ink-soft); line-height: 1.75; }
+  .two-col ul { padding-left: 1.1rem; line-height: 1.85; }
+  .two-col li { margin-bottom: 0.35rem; }
+
+  /* ───── TIMELINE ───── */
+  .timeline { margin-top: 4rem; }
+  .section-rule {
+    text-transform: uppercase; letter-spacing: 0.22em; font-size: 0.72rem;
+    color: var(--ink-soft); text-align: center; margin-bottom: 2rem;
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .section-rule::before, .section-rule::after {
+    content: ''; flex: 1; height: 1px; background: var(--border);
+  }
+  .timeline-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+  }
+  .card {
+    background: white; border: 1px solid var(--border);
+    border-radius: 14px; padding: 1.3rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 28px rgba(42,40,32,0.08);
+  }
+  .card .year {
+    font-family: 'Cormorant Garamond', serif; font-weight: 500;
+    font-size: 2.4rem; color: var(--sage-deep); line-height: 1;
+  }
+  .card p { color: var(--ink-soft); margin: 0.6rem 0 0; line-height: 1.55; font-size: 0.92rem; }
+
+  /* ───── CTA ───── */
+  .cta-band {
+    margin: 5rem 0 0; padding: 3rem 2rem;
+    background: var(--bg-soft); border-radius: 18px;
+    text-align: center;
+  }
+  .cta-band h3 {
+    font-family: 'Cormorant Garamond', serif; font-weight: 500;
+    font-size: 2.2rem; margin: 0 0 0.8rem;
+  }
+  .cta-band p { color: var(--ink-soft); margin: 0 0 1.6rem; }
+  .btn-primary {
+    display: inline-block; padding: 0.85rem 1.8rem;
+    background: var(--sage-deep); color: white;
+    border: none; border-radius: 999px; font-family: inherit;
+    font-size: 0.92rem; cursor: pointer; transition: background 0.2s;
+  }
+  .btn-primary:hover { background: var(--ink); }
+
+  /* ───── FOOTER ───── */
+  footer {
+    margin-top: 5rem; padding: 2.5rem 2.5rem 2rem;
+    border-top: 1px solid var(--border);
+    color: var(--ink-soft); font-size: 0.82rem;
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+  }
+  footer .links { display: flex; gap: 1.4rem; }
+
+  /* ───── RESPONSIVE ───── */
+  @media (max-width: 768px) {
+    .topnav { padding: 1rem 1.2rem; }
+    .nav-links { display: none; }
+    .hero h1 { font-size: 2.6rem; }
+    .hero-img { aspect-ratio: 4/3; }
+    .two-col { grid-template-columns: 1fr; gap: 2rem; }
+    .timeline-grid { grid-template-columns: 1fr; }
+    .cta-band { padding: 2.2rem 1.2rem; }
+    footer { padding: 2rem 1.2rem; flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <a href="index.html" class="brand">
+    <span class="brand-glyph"></span>
+    <span class="brand-name">vida<span class="amp">&amp;</span>cosmetic</span>
+  </a>
+  <div class="nav-links">
+    <a href="index.html">Inicio</a>
+    <a href="insumos.html">Insumos</a>
+    <a href="asesorias-cursos.html">Asesorías</a>
+    <a href="blog.html">Diario</a>
+    <a href="nosotras.html" class="active">Nosotras</a>
+    <a href="contacto.html">Contacto</a>
+  </div>
+  <div class="nav-actions">
+    <span title="Buscar">🔍</span>
+    <span title="Cuenta">👤</span>
+    <span title="Carrito">🛒</span>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="breadcrumb">
+    <a href="index.html">Inicio</a>
+    <span class="sep">/</span>
+    <span>Nosotras</span>
+  </div>
+
+  <section class="hero">
+    <div class="tracking-cap">Nuestra historia · 2018 → hoy</div>
+    <h1>Belleza en un envase,<br /><span class="font-serif-italic">criada en Madrid.</span></h1>
+    <p>
+      Vidacosmetic&amp;mas nació en 2018 con una intención clara: hacer accesible la cosmética que de verdad funciona, sin esconder lo que va dentro. Desde entonces acompañamos a quien empieza y a quien ya vive de formular.
+    </p>
+  </section>
+
+  <div class="hero-img">
+    <span class="glyph">Nuestra historia</span>
+    <span class="label-chip">foto · taller</span>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <h2>Lo que nos guía</h2>
+      <p>
+        Brindar los mejores insumos cosméticos con orientación profesional para que cada cliente, sea aficionada o laboratorio pequeño, compre lo que realmente necesita. No vendemos por vender: si una materia no es para ti, te lo decimos.
+      </p>
+    </div>
+    <div>
+      <h2>Lo que nos diferencia</h2>
+      <ul>
+        <li>Cada lote llega con su ficha técnica y de seguridad.</li>
+        <li>Asesoría gratuita por email a cualquier persona registrada.</li>
+        <li>Cursos en vivo con plazas reducidas, no clases pregrabadas.</li>
+        <li>Envasamos en pequeñas cantidades para que pruebes sin desperdicio.</li>
+      </ul>
+    </div>
+  </div>
+
+  <section class="timeline">
+    <div class="section-rule">línea del tiempo</div>
+    <div class="timeline-grid">
+      <div class="card">
+        <div class="year">2018</div>
+        <p>Nace en un piso de Lavapiés con 12 referencias.</p>
+      </div>
+      <div class="card">
+        <div class="year">2020</div>
+        <p>Abrimos el taller físico y empezamos las asesorías.</p>
+      </div>
+      <div class="card">
+        <div class="year">2023</div>
+        <p>Más de 1.000 formuladoras nos han hecho su primer pedido.</p>
+      </div>
+      <div class="card">
+        <div class="year">2026</div>
+        <p>Lanzamos nuestra tienda online con asesoría incluida.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-band">
+    <h3>¿Empezamos juntas tu fórmula?</h3>
+    <p>Una sesión 1:1 de 60 minutos para revisar tu receta, etiquetado o producción.</p>
+    <a href="asesorias-cursos.html" class="btn-primary">Reservar asesoría →</a>
+  </section>
+</div>
+
+<footer>
+  <div>© 2026 Vidacosmetic&amp;mas · Belleza en un envase</div>
+  <div class="links">
+    <a href="contacto.html">Contacto</a>
+    <a href="#">Aviso legal</a>
+    <a href="#">Privacidad</a>
+  </div>
+</footer>
+
+</body>
+</html>

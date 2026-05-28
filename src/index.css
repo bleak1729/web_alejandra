@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { scroll-behavior: smooth; }
+  body {
+    @apply bg-crema-50 text-tinta font-sans antialiased;
+  }
+  h1, h2, h3, h4 { @apply font-serif; }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center px-5 py-2.5 rounded-full font-medium transition-all duration-200;
+  }
+  .btn-primary { @apply btn bg-verde-700 text-crema-50 hover:bg-verde-900; }
+  .btn-secondary { @apply btn bg-crema-100 text-tinta hover:bg-crema-200; }
+  .btn-gold { @apply btn bg-dorado-500 text-white hover:bg-dorado-600; }
+  .card { @apply bg-white rounded-2xl shadow-soft overflow-hidden; }
+  .input {
+    @apply w-full px-4 py-2.5 rounded-lg border border-crema-200 bg-white focus:border-verde-500 focus:outline-none focus:ring-2 focus:ring-verde-100 transition;
+  }
+  .label { @apply block text-sm font-medium text-tinta/80 mb-1.5; }
+  .container-app { @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8; }
+}

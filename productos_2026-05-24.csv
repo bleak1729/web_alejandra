@@ -1,0 +1,33 @@
+nombre,categoria,subcategoria,precio,unidad,stock,stockMinimo,activo,destacado
+Ácido Hialurónico 1% LMW,acidos,categorias,18.5,gr,50,8,true,true
+Extracto de Centella Asiática,extractos,categorias,22,ml,30,5,true,true
+Aceite de Rosa Mosqueta,aceites,categorias,28,ml,6,10,true,true
+Ácido Hialurónico 1% LMW,acidos,categorias,18.5,gr,50,8,true,true
+Extracto de Té Verde,extractos,categorias,14,ml,45,8,true,false
+Niacinamida 99%,acidos,categorias,15,gr,100,15,true,false
+Ácido Hialurónico 1% LMW,acidos,categorias,18.5,gr,50,8,true,true
+Aceite de Jojoba,aceites,categorias,16,ml,60,10,true,false
+Extracto de Té Verde,extractos,categorias,14,ml,45,8,true,false
+Extracto de Centella Asiática,extractos,categorias,22,ml,30,5,true,true
+Aceite de Rosa Mosqueta,aceites,categorias,28,ml,6,10,true,true
+Extracto de Centella Asiática,extractos,categorias,22,ml,30,5,true,true
+Niacinamida 99%,acidos,categorias,15,gr,100,15,true,false
+Niacinamida 99%,acidos,categorias,15,gr,100,15,true,false
+Cera de Abeja Blanca,ceras,categorias,9.5,gr,0,10,true,false
+Cera de Abeja Blanca,ceras,categorias,9.5,gr,0,10,true,false
+Cera de Abeja Blanca,ceras,categorias,9.5,gr,0,10,true,false
+Cera Emulsionante BTMS-50,ceras,categorias,12,gr,80,10,true,true
+Ácido Hialurónico 1% LMW,acidos,categorias,18.5,gr,50,8,true,true
+Cera Emulsionante BTMS-50,ceras,categorias,12,gr,80,10,true,true
+Cera Emulsionante BTMS-50,ceras,categorias,12,gr,80,10,true,true
+Aceite de Jojoba,aceites,categorias,16,ml,60,10,true,false
+Niacinamida 99%,acidos,categorias,15,gr,100,15,true,false
+Extracto de Té Verde,extractos,categorias,14,ml,45,8,true,false
+Aceite de Jojoba,aceites,categorias,16,ml,60,10,true,false
+Extracto de Té Verde,extractos,categorias,14,ml,45,8,true,false
+Extracto de Centella Asiática,extractos,categorias,22,ml,30,5,true,true
+Cera de Abeja Blanca,ceras,categorias,9.5,gr,0,10,true,false
+Aceite de Rosa Mosqueta,aceites,categorias,28,ml,6,10,true,true
+Cera Emulsionante BTMS-50,ceras,categorias,12,gr,80,10,true,true
+Aceite de Jojoba,aceites,categorias,16,ml,60,10,true,false
+Aceite de Rosa Mosqueta,aceites,categorias,28,ml,6,10,true,true

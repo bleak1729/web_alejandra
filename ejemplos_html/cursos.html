@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Asesorías y cursos — Vidacosmetic&amp;mas</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+<style>
+  :root {
+    --bg: #f6f1e7;
+    --bg-soft: #efe8d8;
+    --ink: #2a2820;
+    --ink-soft: #6b665a;
+    --ink-mute: #a39d8e;
+    --sage: #6f8a5e;
+    --sage-deep: #4d6541;
+    --sage-tint: #dfe7d4;
+    --gold: #c9a96e;
+    --warn: #b86b48;
+    --border: rgba(42,40,32,0.12);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); }
+  body { font-family: 'Inter', sans-serif; line-height: 1.6; }
+  a { color: inherit; text-decoration: none; }
+  .font-serif { font-family: 'Cormorant Garamond', serif; font-weight: 500; }
+  .font-serif-italic { font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 500; }
+  .tracking-cap {
+    text-transform: uppercase; letter-spacing: 0.18em;
+    font-size: 0.7rem; font-weight: 500;
+  }
+
+  /* NAV */
+  .topnav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 2.5rem; border-bottom: 1px solid var(--border);
+    background: var(--bg); position: sticky; top: 0; z-index: 50;
+  }
+  .brand { display: flex; align-items: center; gap: 0.6rem; }
+  .brand-glyph {
+    width: 22px; height: 22px; border-radius: 999px;
+    background: radial-gradient(circle at 30% 30%, var(--sage-tint), var(--sage));
+  }
+  .brand-name { font-family: 'Cormorant Garamond', serif; font-size: 1.35rem; }
+  .brand-name .amp { color: var(--sage-deep); font-style: italic; }
+  .nav-links { display: flex; gap: 2rem; font-size: 0.88rem; }
+  .nav-links a { color: var(--ink-soft); transition: color 0.15s; }
+  .nav-links a:hover, .nav-links a.active { color: var(--ink); }
+  .nav-links a.active { font-weight: 500; }
+  .nav-actions { display: flex; gap: 0.6rem; color: var(--ink-soft); }
+  .nav-actions span { cursor: pointer; padding: 0.4rem; }
+
+  /* LAYOUT */
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 1.6rem 5rem; }
+  .breadcrumb { font-size: 0.78rem; color: var(--ink-soft); padding-top: 2rem; }
+  .breadcrumb a { color: var(--ink-soft); }
+  .breadcrumb .sep { margin: 0 0.5rem; opacity: 0.5; }
+
+  /* HEADER */
+  .page-header {
+    margin: 1.5rem 0 2.5rem;
+    display: grid; grid-template-columns: 1.2fr 1fr;
+    gap: 2rem; align-items: flex-end;
+  }
+  .page-header .kicker { color: var(--sage-deep); margin-bottom: 0.5rem; }
+  .page-header h1 {
+    font-family: 'Cormorant Garamond', serif; font-weight: 500;
+    font-size: 3.6rem; line-height: 1.05; margin: 0;
+  }
+  .page-header p { color: var(--ink-soft); line-height: 1.7; margin: 0; }
+
+  /* FILTERS */
+  .filters { display: flex; gap: 0.5rem; margin-bottom: 2rem; }
+  .btn {
+    padding: 0.55rem 1.1rem; border-radius: 999px;
+    font-family: inherit; font-size: 0.85rem; cursor: pointer;
+    border: 1px solid var(--border); background: transparent;
+    color: var(--ink); transition: all 0.18s;
+  }
+  .btn.active, .btn-primary {
+    background: var(--sage-deep); color: white; border-color: var(--sage-deep);
+  }
+  .btn:hover:not(.active):not(:disabled) { border-color: var(--ink); }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  /* GRID */
+  .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+  .course-card {
+    background: white; border: 1px solid var(--border);
+    border-radius: 14px; overflow: hidden;
+    display: grid; grid-template-columns: 1fr 1.4fr;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .course-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 28px rgba(42,40,32,0.08);
+  }
+  .img-ph {
+    position: relative; overflow: hidden; min-height: 220px;
+    background: linear-gradient(135deg, var(--t1, #dfe7d4), var(--t2, #6f8a5e));
+    display: flex; align-items: center; justify-content: center;
+  }
+  .img-ph::before {
+    content: ''; position: absolute; inset: 0;
+    background-image: repeating-linear-gradient(45deg, transparent 0 12px, rgba(255,255,255,0.06) 12px 13px);
+  }
+  .img-ph .glyph {
+    font-family: 'Cormorant Garamond', serif; font-style: italic;
+    color: rgba(255,255,255,0.9); z-index: 1; font-size: 3rem;
+  }
+  .card-body {
+    padding: 1.5rem; display: flex; flex-direction: column;
+  }
+  .pill-row { display: flex; gap: 0.4rem; margin-bottom: 0.6rem; }
+  .pill {
+    display: inline-block; padding: 0.25rem 0.65rem;
+    border-radius: 999px; font-size: 0.7rem;
+    background: var(--bg-soft); color: var(--ink-soft);
+    text-transform: uppercase; letter-spacing: 0.1em;
+  }
+  .pill.warn { background: rgba(184,107,72,0.15); color: var(--warn); }
+  .course-card h3 {
+    font-family: 'Cormorant Garamond', serif; font-weight: 500;
+    font-size: 1.5rem; margin: 0; line-height: 1.15;
+  }
+  .course-card .desc {
+    color: var(--ink-soft); font-size: 0.9rem;
+    margin: 0.6rem 0 0; line-height: 1.6;
+  }
+  .duracion { font-size: 0.78rem; color: var(--ink-mute); margin-top: 0.8rem; }
+  .card-footer {
+    display: flex; align-items: center; gap: 1rem;
+    margin-top: auto; padding-top: 1rem;
+  }
+  .precio {
+    font-family: 'Cormorant Garamond', serif; font-weight: 500;
+    font-size: 1.6rem;
+  }
+  .card-footer .btn { margin-left: auto; }
+
+  /* COMO FUNCIONA */
+  .how {
+    margin-top: 4.5rem; padding: 3rem 2rem;
+    background: white; border: 1px solid var(--border);
+    border-radius: 18px;
+  }
+  .how h2 {
+    font-family: 'Cormorant Garamond', serif; font-weight: 500;
+    font-size: 2rem; text-align: center; margin: 0 0 2rem;
+  }
+  .how-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+  .step { text-align: center; }
+  .step .num {
+    width: 44px; height: 44px; border-radius: 999px;
+    background: var(--sage-tint); color: var(--sage-deep);
+    font-family: 'Cormorant Garamond', serif; font-size: 1.4rem;
+    display: inline-flex; align-items: center; justify-content: center;
+    margin-bottom: 0.8rem;
+  }
+  .step h4 { margin: 0 0 0.4rem; font-size: 1rem; font-weight: 500; }
+  .step p { color: var(--ink-soft); font-size: 0.88rem; margin: 0; line-height: 1.55; }
+
+  /* CTA */
+  .cta-band {
+    margin-top: 4rem; padding: 3rem 2rem;
+    background: var(--sage-tint); border-radius: 18px;
+    text-align: center;
+  }
+  .cta-band h3 {
+    font-family: 'Cormorant Garamond', serif; font-weight: 500;
+    font-size: 2rem; margin: 0 0 0.6rem;
+  }
+  .cta-band p { color: var(--ink-soft); margin: 0 0 1.6rem; }
+  .cta-band .btn-primary { padding: 0.85rem 1.8rem; font-size: 0.92rem; }
+
+  /* FOOTER */
+  footer {
+    margin-top: 5rem; padding: 2.5rem 2.5rem 2rem;
+    border-top: 1px solid var(--border);
+    color: var(--ink-soft); font-size: 0.82rem;
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+  }
+  footer .links { display: flex; gap: 1.4rem; }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .topnav { padding: 1rem 1.2rem; }
+    .nav-links { display: none; }
+    .page-header { grid-template-columns: 1fr; }
+    .page-header h1 { font-size: 2.4rem; }
+    .grid { grid-template-columns: 1fr; }
+    .course-card { grid-template-columns: 1fr; }
+    .img-ph { min-height: 180px; }
+    .how-grid { grid-template-columns: 1fr; }
+    footer { padding: 2rem 1.2rem; flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <a href="index.html" class="brand">
+    <span class="brand-glyph"></span>
+    <span class="brand-name">vida<span class="amp">&amp;</span>cosmetic</span>
+  </a>
+  <div class="nav-links">
+    <a href="index.html">Inicio</a>
+    <a href="insumos.html">Insumos</a>
+    <a href="asesorias-cursos.html" class="active">Asesorías</a>
+    <a href="blog.html">Diario</a>
+    <a href="nosotras.html">Nosotras</a>
+    <a href="contacto.html">Contacto</a>
+  </div>
+  <div class="nav-actions">
+    <span title="Buscar">🔍</span>
+    <span title="Cuenta">👤</span>
+    <span title="Carrito">🛒</span>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="breadcrumb">
+    <a href="index.html">Inicio</a>
+    <span class="sep">/</span>
+    <span>Asesorías y cursos</span>
+  </div>
+
+  <header class="page-header">
+    <div>
+      <div class="tracking-cap kicker">Aprende con nosotras</div>
+      <h1>Cursos en vivo <span class="font-serif-italic">y</span> asesorías a medida</h1>
+    </div>
+    <p>Plazas reducidas, materiales incluidos y seguimiento posterior. Diseñados por Lucía Vidal, formuladora cosmética y fundadora de la marca.</p>
+  </header>
+
+  <div class="filters" id="filters">
+    <button class="btn active" data-filter="todos">Todos</button>
+    <button class="btn" data-filter="curso">Cursos</button>
+    <button class="btn" data-filter="asesoria">Asesorías</button>
+  </div>
+
+  <div class="grid" id="grid">
+
+    <article class="course-card" data-tipo="curso">
+      <div class="img-ph" style="--t1: #dfe7d4; --t2: #6f8a5e;"><span class="glyph">C</span></div>
+      <div class="card-body">
+        <div class="pill-row"><span class="pill">Curso</span></div>
+        <h3>Formulación de Cremas Hidratantes</h3>
+        <p class="desc">Aprende a formular emulsiones O/W estables desde cero, con activos y conservantes.</p>
+        <div class="duracion">4 sesiones · 8 h</div>
+        <div class="card-footer">
+          <div class="precio">89 €</div>
+          <button class="btn btn-primary">Reservar plaza →</button>
+        </div>
+      </div>
+    </article>
+
+    <article class="course-card" data-tipo="asesoria">
+      <div class="img-ph" style="--t1: #efe3d0; --t2: #c9a96e;"><span class="glyph">A</span></div>
+      <div class="card-body">
+        <div class="pill-row"><span class="pill">Asesoría 1:1</span></div>
+        <h3>Asesoría Personalizada 1:1</h3>
+        <p class="desc">Una sesión privada para revisar tu formulación, etiquetado o producción.</p>
+        <div class="duracion">60 min · online</div>
+        <div class="card-footer">
+          <div class="precio">45 €</div>
+          <button class="btn btn-primary">Reservar plaza →</button>
+        </div>
+      </div>
+    </article>
+
+    <article class="course-card" data-tipo="curso">
+      <div class="img-ph" style="--t1: #e8d3c6; --t2: #b9967d;"><span class="glyph">C</span></div>
+      <div class="card-body">
+        <div class="pill-row"><span class="pill">Curso</span></div>
+        <h3>Jabones Naturales en Frío</h3>
+        <p class="desc">Saponificación segura: lejía, aceites, aromaterapia y curado.</p>
+        <div class="duracion">3 sesiones · 6 h</div>
+        <div class="card-footer">
+          <div class="precio">65 €</div>
+          <button class="btn btn-primary">Reservar plaza →</button>
+        </div>
+      </div>
+    </article>
+
+    <article class="course-card" data-tipo="curso">
+      <div class="img-ph" style="--t1: #dad3c4; --t2: #9b9180;"><span class="glyph">C</span></div>
+      <div class="card-body">
+        <div class="pill-row">
+          <span class="pill">Curso</span>
+          <span class="pill warn">Próxima edición</span>
+        </div>
+        <h3>Cosmética Capilar Avanzada</h3>
+        <p class="desc">Champús, acondicionadores y tratamientos. Próxima edición en otoño.</p>
+        <div class="duracion">5 sesiones · 10 h</div>
+        <div class="card-footer">
+          <div class="precio">110 €</div>
+          <button class="btn" disabled>Avisarme →</button>
+        </div>
+      </div>
+    </article>
+
+  </div>
+
+  <section class="how">
+    <h2>Cómo funciona</h2>
+    <div class="how-grid">
+      <div class="step">
+        <div class="num">1</div>
+        <h4>Reserva tu plaza</h4>
+        <p>Selecciona el curso o la asesoría y elige fecha. Plazas limitadas a 8 personas.</p>
+      </div>
+      <div class="step">
+        <div class="num">2</div>
+        <h4>Recibe el kit</h4>
+        <p>Materiales, fichas técnicas y guion de la sesión te llegan por email 48 h antes.</p>
+      </div>
+      <div class="step">
+        <div class="num">3</div>
+        <h4>Acompañamiento</h4>
+        <p>Tras la sesión tienes 30 días de soporte por email para cualquier duda.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-band">
+    <h3>¿No encuentras lo que necesitas?</h3>
+    <p>Diseñamos formaciones a medida para grupos y empresas.</p>
+    <a href="contacto.html" class="btn-primary">Cuéntanos tu caso →</a>
+  </section>
+</div>
+
+<footer>
+  <div>© 2026 Vidacosmetic&amp;mas · Belleza en un envase</div>
+  <div class="links">
+    <a href="contacto.html">Contacto</a>
+    <a href="#">Aviso legal</a>
+    <a href="#">Privacidad</a>
+  </div>
+</footer>
+
+<script>
+  // Filtro client-side
+  const grid = document.getElementById('grid');
+  document.getElementById('filters').addEventListener('click', (e) => {
+    const btn = e.target.closest('button[data-filter]');
+    if (!btn) return;
+    document.querySelectorAll('#filters .btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const f = btn.dataset.filter;
+    grid.querySelectorAll('.course-card').forEach(c => {
+      c.style.display = (f === 'todos' || c.dataset.tipo === f) ? '' : 'none';
+    });
+  });
+</script>
+
+</body>
+</html>
