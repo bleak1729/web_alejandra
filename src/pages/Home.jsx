@@ -173,10 +173,17 @@ export default function Home() {
   return (
     <>
       {/* ── HERO VIDEO ── */}
-      <section className="relative overflow-hidden border-b border-tinta/10">
+      <section
+        className="relative overflow-hidden border-b border-tinta/10"
+        style={{ height: 'clamp(220px, 45vw, 62vh)' }}
+      >
         <video
           autoPlay muted loop playsInline preload="auto"
-          style={{ display: 'block', width: '100%', height: 'auto' }}
+          style={{
+            position: 'absolute', inset: 0,
+            width: '100%', height: '100%',
+            objectFit: 'cover', objectPosition: 'center top',
+          }}
         >
           <source src="/Banner3.mp4" type="video/mp4" />
         </video>
