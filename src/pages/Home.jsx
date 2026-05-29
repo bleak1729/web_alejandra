@@ -201,10 +201,9 @@ export default function Home() {
   return (
     <>
       {/* ── HERO VIDEO ── */}
-      {/* Contenedor con relación de aspecto 16:9 en mobile, altura fija en desktop */}
       <section
         className="relative overflow-hidden border-b border-tinta/10"
-        style={{ aspectRatio: '16/9', maxHeight: '90vh', minHeight: 220 }}
+        style={{ height: 'clamp(260px, 56.25vw, 92vh)' }}
       >
         <video
           ref={videoRef}
