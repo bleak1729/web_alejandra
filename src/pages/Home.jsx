@@ -172,14 +172,14 @@ export default function Home() {
 
   return (
     <>
-      {/* ── HERO GIF ── */}
+      {/* ── HERO VIDEO ── */}
       <section className="relative overflow-hidden border-b border-tinta/10">
-        {/* GIF determina la altura naturalmente según su proporción */}
-        <img
-          src="/Banner2.gif"
-          alt="Vidacosmetic&mas"
+        <video
+          autoPlay muted loop playsInline preload="auto"
           style={{ display: 'block', width: '100%', height: 'auto' }}
-        />
+        >
+          <source src="/Banner3.mp4" type="video/mp4" />
+        </video>
 
         {/* Overlay */}
         <div style={{
