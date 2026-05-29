@@ -150,12 +150,15 @@ export default function Home() {
     if (!video) return;
     playsRef.current = 0;
 
-    // Forzar reproducción en mobile (algunos browsers requieren el promise)
-    const tryPlay = () => {
+    // Atributos necesarios para iOS Safari (webkit-playsinline no existe en JSX)
+    video.setAttribute('playsinline', 'true');
+    video.setAttribute('webkit-playsinline', 'true');
+    video.muted = true;
+
+    function tryPlay() {
       const p = video.play();
-      if (p !== undefined) p.catch(() => {/* bloqueado por política del browser */});
-    };
-    tryPlay();
+      if (p !== undefined) p.catch(() => {});
+    }
 
     function handleEnded() {
       playsRef.current += 1;
@@ -163,11 +166,21 @@ export default function Home() {
         video.currentTime = 0;
         tryPlay();
       }
-      // tras 1 reproducción se queda en el último fotograma
+    }
+
+    // Esperar a que el video tenga datos suficientes antes de reproducir
+    // (en mobile el video puede no estar listo al montar el componente)
+    if (video.readyState >= 2) {
+      tryPlay();
+    } else {
+      video.addEventListener('loadeddata', tryPlay, { once: true });
     }
 
     video.addEventListener('ended', handleEnded);
-    return () => video.removeEventListener('ended', handleEnded);
+    return () => {
+      video.removeEventListener('ended', handleEnded);
+      video.removeEventListener('loadeddata', tryPlay);
+    };
   }, []);
 
   const [destacados, setDestacados] = useState([]);
@@ -207,7 +220,7 @@ export default function Home() {
       >
         <video
           ref={videoRef}
-          autoPlay muted playsInline preload="auto"
+          muted playsInline preload="auto"
           style={{
             position: 'absolute', inset: 0,
             width: '100%', height: '100%',
