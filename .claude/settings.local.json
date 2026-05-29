@@ -7,7 +7,24 @@
       "Bash(curl -s http://localhost:5173/)",
       "Bash(curl -s http://localhost:5173/src/main.jsx)",
       "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:5173/)",
-      "Bash(pkill -f \"vite\")"
+      "Bash(pkill -f \"vite\")",
+      "mcp__claude_ai_Vercel__list_teams",
+      "mcp__claude_ai_Vercel__deploy_to_vercel",
+      "Bash(npx vercel *)",
+      "Bash(grep -o '\"#[0-9a-fA-F]\\\\{3,8\\\\}\"' /Users/bleak/Documents/Claude/web_alejandra/PaletaColores/package.html)",
+      "Bash(grep -oE \"\\\\\"[A-Za-z][A-Za-z ]{3,30}\\\\\"\" /Users/bleak/Documents/Claude/web_alejandra/PaletaColores/package.html)",
+      "Bash(npx playwright *)",
+      "Bash(pkill -f \"vite.*5175\")",
+      "Bash(xargs ls -la)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:5175/)",
+      "Bash(node -e ' *)",
+      "Bash(npx --prefix /Users/bleak/Documents/Claude/web_alejandra playwright-core)",
+      "Bash(npx -y playwright@1.60.0 node /tmp/modal_test.mjs)",
+      "Bash(# Usar la ruta exacta del binario playwright que ya instalamos *)",
+      "Read(//Users/bleak/**)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:5180/)",
+      "Bash(pkill -f \"vite.*5180\")",
+      "Bash(xargs kill -9)"
     ]
   }
 }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { collection, getDocs, limit, query, where } from 'firebase/firestore';
 import { db } from '../lib/firebase';
@@ -142,6 +142,27 @@ function ProdCard({ producto, onAdd, added }) {
 }
 
 export default function Home() {
+  const videoRef  = useRef(null);
+  const playsRef  = useRef(0);   // contador de reproducciones
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    playsRef.current = 0;
+
+    function handleEnded() {
+      playsRef.current += 1;
+      if (playsRef.current < 1) {
+        video.currentTime = 0;
+        video.play();
+      }
+      // al terminar la 2ª vez se queda en el último fotograma
+    }
+
+    video.addEventListener('ended', handleEnded);
+    return () => video.removeEventListener('ended', handleEnded);
+  }, []);
+
   const [destacados, setDestacados] = useState([]);
   const [added, setAdded] = useState({});
   const [newsEmail, setNewsEmail] = useState('');
@@ -172,39 +193,33 @@ export default function Home() {
 
   return (
     <>
-      {/* ── HERO MINIMAL ── */}
-      <section
-        className="text-center border-b border-tinta/10 relative"
-        style={{
-          padding: '4rem 0 3rem',
-          backgroundImage: `linear-gradient(rgba(251,243,236,0.82), rgba(244,232,220,0.90)), url('/banner.jpeg')`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
-      >
-        <div className="container-app" style={{ maxWidth: '1440px' }}>
-          <p
-            className="text-[0.7rem] uppercase tracking-[0.18em] font-medium mb-6"
-            style={{ color: P.deep }}
-          >
-            Belleza en un envase · Desde 2018
-          </p>
-          <h1
-            className="font-serif font-medium leading-[1.02] mx-auto m-0"
-            style={{ fontSize: 'clamp(2.6rem, 5.5vw, 4.8rem)', maxWidth: '900px', color: P.ink }}
-          >
-            Materias primas para <em>tu propia</em> cosmética natural
-          </h1>
-          <p
-            className="mt-6 mx-auto leading-relaxed"
-            style={{ fontSize: '1.1rem', color: P.inkSoft, maxWidth: '560px' }}
-          >
-            Selección curada para formuladoras particulares y profesionales del sector cosmético.
-          </p>
-          <div className="flex flex-wrap justify-center gap-3 mt-8">
-            <BtnPrimary to="/insumos">Explorar insumos →</BtnPrimary>
-            <BtnGhost to="/asesorias-cursos">Reservar asesoría</BtnGhost>
-          </div>
+      {/* ── HERO VIDEO ── */}
+      <section className="relative overflow-hidden border-b border-tinta/10" style={{ minHeight: '70vh' }}>
+        {/* Video de fondo */}
+        <video
+          ref={videoRef}
+          autoPlay muted playsInline
+          style={{
+            position: 'absolute', inset: 0,
+            width: '100%', height: '100%',
+            objectFit: 'cover', objectPosition: 'center',
+          }}
+        >
+          <source src="/Hero_Video.mp4" type="video/mp4" />
+        </video>
+
+        {/* Overlay suave para legibilidad */}
+        <div style={{
+          position: 'absolute', inset: 0,
+          background: 'linear-gradient(to bottom, rgba(238,245,243,0.55) 0%, rgba(238,245,243,0.45) 60%, rgba(238,245,243,0.65) 100%)',
+        }} />
+
+        {/* Botones al fondo del hero */}
+        <div className="relative z-10 flex flex-wrap justify-center gap-3"
+          style={{ position: 'absolute', bottom: '2.5rem', left: 0, right: 0 }}
+        >
+          <BtnPrimary to="/insumos">Explorar insumos →</BtnPrimary>
+          <BtnGhost to="/asesorias-cursos">Reservar asesoría</BtnGhost>
         </div>
       </section>
 
