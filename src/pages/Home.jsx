@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { collection, getDocs, limit, query, where } from 'firebase/firestore';
 import { db } from '../lib/firebase';
@@ -142,47 +142,6 @@ function ProdCard({ producto, onAdd, added }) {
 }
 
 export default function Home() {
-  const videoRef  = useRef(null);
-  const playsRef  = useRef(0);   // contador de reproducciones
-
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-    playsRef.current = 0;
-
-    // Atributos necesarios para iOS Safari (webkit-playsinline no existe en JSX)
-    video.setAttribute('playsinline', 'true');
-    video.setAttribute('webkit-playsinline', 'true');
-    video.muted = true;
-
-    function tryPlay() {
-      const p = video.play();
-      if (p !== undefined) p.catch(() => {});
-    }
-
-    function handleEnded() {
-      playsRef.current += 1;
-      if (playsRef.current < 1) {
-        video.currentTime = 0;
-        tryPlay();
-      }
-    }
-
-    // Esperar a que el video tenga datos suficientes antes de reproducir
-    // (en mobile el video puede no estar listo al montar el componente)
-    if (video.readyState >= 2) {
-      tryPlay();
-    } else {
-      video.addEventListener('loadeddata', tryPlay, { once: true });
-    }
-
-    video.addEventListener('ended', handleEnded);
-    return () => {
-      video.removeEventListener('ended', handleEnded);
-      video.removeEventListener('loadeddata', tryPlay);
-    };
-  }, []);
-
   const [destacados, setDestacados] = useState([]);
   const [added, setAdded] = useState({});
   const [newsEmail, setNewsEmail] = useState('');
@@ -218,17 +177,15 @@ export default function Home() {
         className="relative overflow-hidden border-b border-tinta/10"
         style={{ height: 'clamp(260px, 56.25vw, 92vh)' }}
       >
-        <video
-          ref={videoRef}
-          muted playsInline preload="auto"
+        <img
+          src="/Banner2.gif"
+          alt="Vidacosmetic&mas"
           style={{
             position: 'absolute', inset: 0,
             width: '100%', height: '100%',
             objectFit: 'cover', objectPosition: 'center',
           }}
-        >
-          <source src="/Hero_Video.mp4" type="video/mp4" />
-        </video>
+        />
 
         {/* Overlay */}
         <div style={{
