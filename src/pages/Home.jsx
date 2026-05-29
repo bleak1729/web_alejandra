@@ -173,10 +173,7 @@ export default function Home() {
   return (
     <>
       {/* ── HERO VIDEO ── */}
-      <section
-        className="relative overflow-hidden border-b border-tinta/10"
-        style={{ maxHeight: '75vh' }}
-      >
+      <section className="relative overflow-hidden border-b border-tinta/10">
         <video
           autoPlay muted loop playsInline preload="auto"
           style={{ display: 'block', width: '100%', height: 'auto' }}
