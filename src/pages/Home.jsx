@@ -150,13 +150,20 @@ export default function Home() {
     if (!video) return;
     playsRef.current = 0;
 
+    // Forzar reproducción en mobile (algunos browsers requieren el promise)
+    const tryPlay = () => {
+      const p = video.play();
+      if (p !== undefined) p.catch(() => {/* bloqueado por política del browser */});
+    };
+    tryPlay();
+
     function handleEnded() {
       playsRef.current += 1;
       if (playsRef.current < 1) {
         video.currentTime = 0;
-        video.play();
+        tryPlay();
       }
-      // al terminar la 2ª vez se queda en el último fotograma
+      // tras 1 reproducción se queda en el último fotograma
     }
 
     video.addEventListener('ended', handleEnded);
@@ -194,11 +201,14 @@ export default function Home() {
   return (
     <>
       {/* ── HERO VIDEO ── */}
-      <section className="relative overflow-hidden border-b border-tinta/10" style={{ minHeight: '70vh' }}>
-        {/* Video de fondo */}
+      {/* Contenedor con relación de aspecto 16:9 en mobile, altura fija en desktop */}
+      <section
+        className="relative overflow-hidden border-b border-tinta/10"
+        style={{ aspectRatio: '16/9', maxHeight: '90vh', minHeight: 220 }}
+      >
         <video
           ref={videoRef}
-          autoPlay muted playsInline
+          autoPlay muted playsInline preload="auto"
           style={{
             position: 'absolute', inset: 0,
             width: '100%', height: '100%',
@@ -208,16 +218,18 @@ export default function Home() {
           <source src="/Hero_Video.mp4" type="video/mp4" />
         </video>
 
-        {/* Overlay suave para legibilidad */}
+        {/* Overlay */}
         <div style={{
           position: 'absolute', inset: 0,
-          background: 'linear-gradient(to bottom, rgba(238,245,243,0.55) 0%, rgba(238,245,243,0.45) 60%, rgba(238,245,243,0.65) 100%)',
+          background: 'linear-gradient(to bottom, rgba(238,245,243,0.45) 0%, rgba(238,245,243,0.35) 60%, rgba(238,245,243,0.60) 100%)',
         }} />
 
         {/* Botones al fondo del hero */}
-        <div className="relative z-10 flex flex-wrap justify-center gap-3"
-          style={{ position: 'absolute', bottom: '2.5rem', left: 0, right: 0 }}
-        >
+        <div style={{
+          position: 'absolute', bottom: '1.5rem', left: 0, right: 0,
+          display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '0.75rem',
+          padding: '0 1rem', zIndex: 10,
+        }}>
           <BtnPrimary to="/insumos">Explorar insumos →</BtnPrimary>
           <BtnGhost to="/asesorias-cursos">Reservar asesoría</BtnGhost>
         </div>
