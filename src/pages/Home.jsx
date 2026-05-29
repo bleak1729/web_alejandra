@@ -172,19 +172,13 @@ export default function Home() {
 
   return (
     <>
-      {/* ── HERO VIDEO ── */}
-      <section
-        className="relative overflow-hidden border-b border-tinta/10"
-        style={{ height: 'clamp(260px, 56.25vw, 92vh)' }}
-      >
+      {/* ── HERO GIF ── */}
+      <section className="relative overflow-hidden border-b border-tinta/10">
+        {/* GIF determina la altura naturalmente según su proporción */}
         <img
           src="/Banner2.gif"
           alt="Vidacosmetic&mas"
-          style={{
-            position: 'absolute', inset: 0,
-            width: '100%', height: '100%',
-            objectFit: 'cover', objectPosition: 'center',
-          }}
+          style={{ display: 'block', width: '100%', height: 'auto' }}
         />
 
         {/* Overlay */}
